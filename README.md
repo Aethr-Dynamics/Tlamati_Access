@@ -136,7 +136,7 @@ Cada mejora ha sido versionada meticulosamente en ramas específicas para asegur
 
 ### Clonar repositorio principal
 
-git clone [<URL_DEL_REPOSITORIO>](https://github.com/Aethr-Dynamics/Tlamati_Access.git) tlamati-access
+git clone https://github.com/Aethr-Dynamics/Tlamati_Access.git tlamati-access
 cd tlamati-access
 
 ### Instalar dependencias PHP y Node.js
@@ -148,12 +148,13 @@ cp .env.example .env
 php artisan key:generate
 
 Editar el archivo .env y establecer la conexión con PostgreSQL:
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=nombre_de_la_base
-DB_USERNAME=usuario
-DB_PASSWORD=contraseña
+
+|DB_CONNECTION=pgsql|
+|DB_HOST=127.0.0.1|
+|DB_PORT=5432|
+|DB_DATABASE=nombre_de_la_base|
+|DB_USERNAME=usuario|
+|DB_PASSWORD=contraseña|
 
 ### Ejecutar migraciones y seeders
 php artisan migrate --seed
