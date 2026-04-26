@@ -180,7 +180,7 @@ php artisan serve
 
 ---
 
-11. Licencia
+## 11. Licencia
 Aviso legal de propiedad intelectual
 
 EL CÓDIGO FUENTE, DOCUMENTACIÓN Y ARTEFACTOS CONTENIDOS EN ESTE REPOSITORIO SON MATERIAL PROTEGIDO POR DERECHO PRIVATIVO.
