@@ -1,0 +1,2 @@
+//
+$('#miTabla').DataTable();

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>T.A. | @yield('template_title')</title>
+
+    <link rel="shortcut icon" href="{{asset('favicon.png')}}" />
+
+    <!--begin::Primary Meta Tags-->
+    <meta name="author" content="ColorlibHQ" />
+    <meta name="description" content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."/>
+    <meta name="keywords" content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"/>
+    <!--end::Primary Meta Tags-->
+
+    <!-- ----- ARCHIVOS AdminLTE ----- -->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('adminlte/css/adminlte.min.css')}}">
+    <!--end::Accessibility Features-->
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print" onload="this.media = 'all'"/>
+    <!--end::Fonts-->
+
+    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+    <!--end::Third Party Plugin(OverlayScrollbars)-->
+
+    <!--begin::Third Party Plugin(Bootstrap Icons)-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+    <!--end::Third Party Plugin(Bootstrap Icons)-->
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!--begin::Required Plugin(AdminLTE)-->
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('adminlte/css/adminlte.min.css')}}">
+    <!--end::Required Plugin(AdminLTE)-->
+
+    <!-- AdminLTE + DataTables -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <!-- apexcharts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- jsvectormap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous" />
+  </head>
+  <!--end::Head-->
+
+<!--begin::Body-->
+<!-- <body class="hold-transition sidebar-mini ">layout-fixed -->
+<body class="layout-fixed sidebar-mini bg-body-tertiary">
+<div class="app-wrapper"><!--begin::App Wrapper-->
+
+    <!-- Navbar -->
+    @include('layouts.navbar')
+
+    <!-- Sidebar -->
+    @include('layouts.sidebar')
+
+
+    <main class="app-main"><!--begin::App Main-->
+
+        <div class="app-content"><!--begin::App Content-->
+            @yield('content')
+        </div><!--end::App Content-->
+    </main><!--end::App Main-->
+
+
+
+
+      <!--begin::Footer-->
+      <footer class="app-footer" style="background-color: #E0E0E0;">
+        <!--begin::To the end-->
+        <div class="float-end d-none d-sm-inline">DV - 1.5.0</div>
+        <!--end::To the end-->
+        <!--begin::Copyright-->
+        <strong>
+          Copyright &copy; 2024-2026&nbsp;
+          <a href="#" class="text-decoration-none">Tlamati Access</a>.
+        </strong>
+        Todos los derechos reservados.
+        <!--end::Copyright-->
+      </footer>
+      <!--end::Footer-->
+    </div>
+    <!--end::App Wrapper-->
+    <!--begin::Script-->
+    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+
+
+    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+
+    <!-- AdminLTE App -->
+    <script src="{{asset('adminlte/js/adminlte.min.js')}}"></script>
+
+
+
+    <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+    <script>
+      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+      const Default = {
+        scrollbarTheme: 'os-theme-light',
+        scrollbarAutoHide: 'leave',
+        scrollbarClickScroll: true,
+      };
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+
+        // Disable OverlayScrollbars on mobile devices to prevent touch interference
+        const isMobile = window.innerWidth <= 992;
+
+        if (
+          sidebarWrapper &&
+          OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
+          !isMobile
+        ) {
+          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+            scrollbars: {
+              theme: Default.scrollbarTheme,
+              autoHide: Default.scrollbarAutoHide,
+              clickScroll: Default.scrollbarClickScroll,
+            },
+          });
+        }
+      });
+    </script>
+    <!--end::OverlayScrollbars Configure-->
+
+    <!-- OPTIONAL SCRIPTS -->
+
+    <!-- sortablejs -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- sortablejs -->
+    <script>
+      new Sortable(document.querySelector('.connectedSortable'), {
+        group: 'shared',
+        handle: '.card-header',
+      });
+
+      const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+      cardHeaders.forEach((cardHeader) => {
+        cardHeader.style.cursor = 'move';
+      });
+    </script>
+
+
+
+   
+  </body>
+  <!--end::Body-->
+</html>
