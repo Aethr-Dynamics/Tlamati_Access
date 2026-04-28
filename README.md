@@ -37,8 +37,9 @@
 - [7. Arquitectura y control de versiones](#7-arquitectura-y-control-de-versiones)
 - [8. Requisitos técnicos](#8-requisitos-técnicos)
 - [9. Instalación](#9-instalación)
-- [10. Historial de versiones](#10-historial-de-versiones)
-- [11. Licencia](#11-licencia)
+- [10. Versiones lanzadas](#10-versiones-lanzadas)
+- [11. Historial de versiones](#11-historial-de-versiones)
+- [12. Licencia](#12-licencia)
 
 ---
 
@@ -167,21 +168,16 @@ php artisan serve
 
 ---
 
-<<<<<<< HEAD
-## 11. Versiones lanzadas
-| Versión   | Característica principal                  | Descripción técnica                                                                                                                |
-| --------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel.   
+## 10. Versiones lanzadas
+| Versión   | Característica principal | Descripción técnica |
+| --------- | ----------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel. |   
 
-## 12. Versiones planeadas
-| Versión   | Característica principal                  | Descripción técnica                                                                                                                |
-| --------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |      
-=======
-## 10. Historial de versiones
-| Versión   | Característica principal                  | Descripción técnica                                                                                                                |
-| --------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel.                                   |
->>>>>>> 97b553a4d91b69e4a12292549ba748b7d8db11b2
+---
+
+## 11. Historial de versiones
+| Versión   | Característica principal                  | Descripción técnica |
+| --------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
 | **3.2.0** | Control de acceso basado en roles (RBAC)  | Desarrollo de CRUD dependientes del perfil de usuario e implementación de medidas contra inyección SQL/XSS.                        |
 | **3.2.1** | Experiencia de usuario                    | Módulo unificado de vistas de errores HTTP estándar, mejorando la resiliencia visible.                                             |
 | **3.3.0** | Lectura y reportes avanzados              | Implementación de lectura física de códigos QR con hardware especializado y generación masiva de reportes PDF auditables.          |
@@ -191,11 +187,7 @@ php artisan serve
 
 ---
 
-<<<<<<< HEAD
-## 13. Licencia
-=======
-## 11. Licencia
->>>>>>> 97b553a4d91b69e4a12292549ba748b7d8db11b2
+## 12. Licencia
 Aviso legal de propiedad intelectual
 
 EL CÓDIGO FUENTE, DOCUMENTACIÓN Y ARTEFACTOS CONTENIDOS EN ESTE REPOSITORIO SON MATERIAL PROTEGIDO POR DERECHO PRIVATIVO.
