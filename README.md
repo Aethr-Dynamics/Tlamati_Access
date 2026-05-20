@@ -37,9 +37,21 @@
 - [7. Arquitectura y control de versiones](#7-arquitectura-y-control-de-versiones)
 - [8. Requisitos técnicos](#8-requisitos-técnicos)
 - [9. Instalación](#9-instalación)
-- [10. Versiones lanzadas](#10-versiones-lanzadas)
-- [11. Historial de versiones](#11-historial-de-versiones)
-- [12. Licencia](#12-licencia)
+- [10. Aplicacion Movil de autenticacion por QR](#10-Aplicacion-Movil)
+    - [¿Qué hace la app?](#qué-hace-la-app)
+    - [Tecnologías utilizadas](#tecnologías-utilizadas)
+    - [Requisitos previos](#requisitos-previos)
+    - [Estructura del proyecto](#estructura-del-proyecto)
+    - [Configuración de Firebase](#configuración-de-firebase)
+    - [Instalación y ejecución](#instalación-y-ejecución)
+    - [Base de datos](#base-de-datos)
+    - [Flujo de la aplicación](#flujo-de-la-aplicación)
+    - [Cómo funciona el código QR](#cómo-funciona-el-código-qr)
+    - [Detección de tipo de usuario](#detección-de-tipo-de-usuario)
+    - [Colores y tema visual](#colores-y-tema-visual)
+  - [11. Versiones lanzadas](#10-versiones-lanzadas)
+- [12. Historial de versiones](#11-historial-de-versiones)
+- [13. Licencia](#12-licencia)
 
 ---
 
@@ -167,15 +179,289 @@ npm run build
 php artisan serve
 
 ---
+## 10. Aplicacion Movil de autenticacion por QR
 
-## 10. Versiones lanzadas
+App móvil de control de acceso institucional para estudiantes y profesores. Permite autenticarse con credenciales institucionales, consultar el perfil y generar un código QR dinámico para acceder a las instalaciones.
+
+---
+
+## ¿Qué hace la app?
+
+1. El usuario ingresa su correo y contraseña institucional
+2. La app lo autentica contra Firebase Auth y consulta sus datos en Firestore
+3. Muestra su perfil completo (nombre, sede, matrícula, etc.)
+4. Detecta automáticamente si es **estudiante** o **profesor** según el formato de su matrícula
+5. Permite generar un **código QR dinámico** que cambia cada 5 minutos y está vinculado a su matrícula
+
+---
+
+## Tecnologías utilizadas
+
+| Tecnología | Versión | Uso |
+|---|---|---|
+| React Native | 0.74 | Framework base de la app |
+| Expo | ~51.0 | Plataforma de desarrollo y build |
+| Expo Router | ~3.5 | Navegación basada en archivos |
+| TypeScript | ~5.3 | Tipado estático |
+| Firebase Auth | 10.x | Autenticación de usuarios |
+| Firebase Firestore | 10.x | Base de datos de perfiles |
+| react-native-qrcode-svg | ^6.3 | Generación del código QR |
+| react-native-svg | 15.2 | Dependencia del QR |
+
+---
+
+## Requisitos previos
+
+Antes de comenzar necesitas tener instalado:
+
+- **Node.js** v18 o superior — [nodejs.org](https://nodejs.org)
+- **npm** v9 o superior (viene con Node)
+- **Expo CLI** — se instala con `npm install -g expo-cli`
+- **Expo Go** en tu teléfono (iOS o Android) para probar en dispositivo físico
+- Una cuenta en **Firebase** — [console.firebase.google.com](https://console.firebase.google.com)
+
+---
+
+## Estructura del proyecto
+
+```
+tlamati-access/
+│
+├── app/                        # Pantallas de la aplicación (Expo Router)
+│   ├── _layout.tsx             # Configuración del Stack navigator
+│   ├── index.tsx               # Redirige automáticamente a /login
+│   ├── login.tsx               # Pantalla de inicio de sesión
+│   ├── perfil.tsx              # Perfil del usuario autenticado
+│   └── codigoAcceso.tsx        # Generador de código QR dinámico
+│
+├── services/
+│   └── autenticar.ts           # Lógica de Firebase (Auth + Firestore)
+│
+├── assets/
+│   └── logo.png                # Logo de Tlamati Access (debes colocarlo tú)
+│
+├── app.json                    # Configuración de Expo
+├── babel.config.js             # Configuración de Babel
+├── package.json                # Dependencias del proyecto
+├── tsconfig.json               # Configuración de TypeScript
+└── README.md                   # Este archivo
+```
+
+---
+
+## Configuración de Firebase
+
+### Paso 1 — Crear el proyecto
+
+1. Ve a [console.firebase.google.com](https://console.firebase.google.com)
+2. Click en **"Agregar proyecto"**
+3. Dale un nombre (ej. `tlamati-access`) y crea el proyecto
+
+### Paso 2 — Activar Authentication
+
+1. En el menú izquierdo → **Authentication** → **Comenzar**
+2. Pestaña **Sign-in method** → habilita **Correo/Contraseña** → Guardar
+
+### Paso 3 — Crear Firestore
+
+1. Menú izquierdo → **Firestore Database** → **Crear base de datos**
+2. Selecciona **Comenzar en modo de prueba**
+3. Elige la región `us-central1` (o la más cercana a ti)
+
+### Paso 4 — Registrar la app
+
+1. En la página principal del proyecto → click en el ícono **</>** (Web)
+2. Dale un nombre (ej. `tlamati-app`) → **Registrar app**
+3. Copia el objeto `firebaseConfig` que aparece
+
+### Paso 5 — Pegar credenciales en el código
+
+Abre `services/autenticar.ts` y reemplaza los valores del objeto `firebaseConfig`:
+
+```typescript
+const firebaseConfig = {
+  apiKey:            'PEGA_AQUÍ_TU_API_KEY',
+  authDomain:        'PEGA_AQUÍ_TU_AUTH_DOMAIN',
+  projectId:         'PEGA_AQUÍ_TU_PROJECT_ID',
+  storageBucket:     'PEGA_AQUÍ_TU_STORAGE_BUCKET',
+  messagingSenderId: 'PEGA_AQUÍ_TU_MESSAGING_SENDER_ID',
+  appId:             'PEGA_AQUÍ_TU_APP_ID',
+};
+```
+
+> Estas claves son públicas por diseño de Firebase, pero en producción configura las **reglas de seguridad de Firestore** para proteger los datos.
+
+---
+
+## Instalación y ejecución
+
+```bash
+# 1. Clonar o descomprimir el proyecto
+cd tlamati-access
+
+# 2. Instalar dependencias base
+npm install
+
+# 3. Instalar librerías nativas (QR)
+npx expo install @react-native-async-storage/async-storage
+npx expo install react-native-svg react-native-qrcode-svg firebase
+npm install firebase
+
+# 4. Iniciar el servidor de desarrollo
+npx expo start
+
+
+```
+
+Luego escanea el código QR que aparece en la terminal con la app **Expo Go** en tu teléfono, o presiona:
+- `a` para abrir en emulador Android
+- `i` para abrir en simulador iOS
+- `w` para abrir en navegador web
+
+---
+
+## Base de datos
+
+### Colección: `usuarios`
+
+Cada documento tiene como **ID el UID de Firebase Auth** del usuario.
+
+| Campo | Tipo | Descripción |
+|---|---|---|
+| `email` | string | Correo institucional |
+| `nombre` | string | Primer nombre |
+| `apPaterno` | string | Apellido paterno |
+| `apMaterno` | string | Apellido materno |
+| `sede` | string | Campus o sede institucional |
+| `licenciatura` | string | Carrera (solo estudiantes) |
+| `departamento` | string | Área académica (solo profesores) |
+| `estado` | string | `Activo` o `Inactivo` |
+| `matricula` | string | Identificador único (ver formatos) |
+| `foto` | string | URL de foto de perfil (puede estar vacío) |
+
+### Cómo crear un usuario manualmente
+
+1. **Firebase Auth** → **Users** → **Add user** → ingresa email y contraseña → copia el **UID**
+2. **Firestore** → **usuarios** → **Add document** → pega el UID como Document ID → agrega los campos de la tabla
+
+---
+
+## Flujo de la aplicación
+
+```
+┌─────────┐     credenciales     ┌──────────────────┐
+│  Login  │ ──────────────────►  │  Firebase Auth   │
+└─────────┘                      └────────┬─────────┘
+                                          │ UID
+                                          ▼
+                                 ┌──────────────────┐
+                                 │    Firestore     │
+                                 │  usuarios/{uid}  │
+                                 └────────┬─────────┘
+                                          │ datos + tipo
+                                          ▼
+                                 ┌──────────────────┐
+                                 │     Perfil       │
+                                 │  (estudiante /   │
+                                 │    profesor)     │
+                                 └────────┬─────────┘
+                                          │ botón
+                                          ▼
+                                 ┌──────────────────┐
+                                 │   Código QR      │
+                                 │  (dinámico 5min) │
+                                 └──────────────────┘
+```
+
+En cada pantalla intermedia hay un botón **← Atrás** en el header para regresar a la pantalla anterior.
+
+---
+
+## Cómo funciona el código QR
+
+El QR es **dinámico** pero no requiere conexión a internet para generarse. Funciona así:
+
+### Contenido del QR
+
+```json
+{
+  "matricula": "21-123-4567",
+  "ventana": 347291
+}
+```
+
+- `matricula` — valor estático guardado en Firestore, único por usuario
+- `ventana` — número entero que se calcula como `Math.floor(Date.now() / 300000)` y cambia automáticamente cada **5 minutos**
+
+### ¿Por qué es seguro?
+
+El lector del QR solo necesita:
+1. Leer la matrícula del QR
+2. Calcular la ventana actual con la misma fórmula
+3. Comparar → si coincide, el código es válido
+
+Esto significa que un QR capturado en pantalla **expira en máximo 5 minutos**, sin necesidad de base de datos ni conexión en el momento de la lectura.
+
+### Indicador visual
+
+El contador cambia de color según el tiempo restante:
+
+| Color | Tiempo restante |
+|---|---|
+| Verde | Más de 2 minutos |
+| Naranja | Entre 1 y 2 minutos |
+| Rojo | Menos de 1 minuto |
+
+---
+
+##  Detección de tipo de usuario
+
+El tipo se detecta automáticamente al iniciar sesión, según el **formato de la matrícula** guardada en Firestore. No hay ningún campo `tipo` en la base de datos, la app lo deduce sola:
+
+| Tipo | Formato | Ejemplo | Regex |
+|---|---|---|---|
+| Estudiante | `DD-DDD-DDDD` | `21-123-4567` | `^\d{2}-\d{3}-\d{4}$` |
+| Profesor | `DD-DDDD-DD` | `20-4789-21` | `^\d{2}-\d{4}-\d{2}$` |
+
+Donde `D` representa un dígito numérico. Si la matrícula no coincide con ningún formato, la app lanza un error de autenticación.
+
+---
+
+##  Colores y tema visual
+
+Los colores están basados en el logo institucional de Tlamati Access:
+
+| Nombre | Hex | Uso |
+|---|---|---|
+| Navy | `#1a2f5e` | Fondo de botones, textos principales, header |
+| Teal | `#2a9d8f` | Acentos, badges de estudiante, bordes activos |
+| Teal Light | `#e8f5f3` | Fondos suaves, badge de estudiante |
+| Navy Light | `#eef1f8` | Fondo de íconos en filas de info |
+| Naranja | `#ff9800` | Badge de profesor |
+| Naranja Light | `#fff3e0` | Fondo badge de profesor |
+| Blanco | `#ffffff` | Fondo general de la app |
+| Gris claro | `#f5f7fb` | Fondo de pantallas internas |
+
+---
+
+##  Notas adicionales
+
+- El logo debe estar en `assets/logo.png` — sin él la pantalla de login lanzará un error
+- La foto de perfil acepta cualquier URL pública; si está vacía se muestra un avatar genérico
+- En producción se recomienda configurar las **reglas de seguridad de Firestore** para que cada usuario solo pueda leer su propio documento
+- El proyecto está configurado solo para orientación **portrait** (vertical)
+
+
+
+
+## 11. Versiones lanzadas
 | Versión   | Característica principal | Descripción técnica |
 | --------- | ----------------------------------------- | ------------------------------------------------------------------------------------------ |
 | **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel. |   
 
 ---
 
-## 11. Historial de versiones
+## 12. Historial de versiones
 | Versión   | Característica principal                  | Descripción técnica |
 | --------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
 | **3.2.0** | Control de acceso basado en roles (RBAC)  | Desarrollo de CRUD dependientes del perfil de usuario e implementación de medidas contra inyección SQL/XSS.                        |
@@ -187,7 +473,7 @@ php artisan serve
 
 ---
 
-## 12. Licencia
+## 13. Licencia
 Aviso legal de propiedad intelectual
 
 EL CÓDIGO FUENTE, DOCUMENTACIÓN Y ARTEFACTOS CONTENIDOS EN ESTE REPOSITORIO SON MATERIAL PROTEGIDO POR DERECHO PRIVATIVO.
