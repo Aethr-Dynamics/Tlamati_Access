@@ -1,0 +1,86 @@
+:root {
+    --background: #F5F5F5;
+    /* Arena del Valle */
+    --backgroundA9: rgba(245, 245, 245, 0.9);
+    /* Arena del Valle */
+    --backgroundContainer: #E0E0E0;
+    /* Sombra Suave  */
+    --titleH1: #0A3A56;
+    /* Azul Nocturno  */
+    --warning: #FFB74D;
+    /* Ámbar Oscuro */
+    --error: FF6B6B;
+    /* Rojo Carmesí */
+    --text: #212121;
+    /* Gris Carbón */
+    --slogan: #3FAFC5;
+    /* Gradas de Azul Anáhuac 300 */
+    --linkHover: #26A69A; /* Turquesa Prehispánica */
+
+    --primary-color: #0A3A56;
+    /* Indigo */
+    --secondary-color: #80DEEA;
+    /* Purple */
+    --bg-overlay: rgba(255, 255, 255, 0.9);
+    --text-dark: #212121;
+    /* Gris Carbón */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--text);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8fafc;
+    color: var(--text);
+    overflow-x: hidden;
+}
+ c
+
+/* ----------+----------+---------- */
+/* ---------- Escanear usuario ---------- */
+.contenedor-input{
+    display: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscador-box{
+    background: #E0E0E0;
+    border-radius: 50px;
+    padding: 10px;
+}
+
+.input-buscador{
+    border: none;
+    outline: none;          /* Quita el borde negro */
+    box-shadow: none;       /* Evita sombras de focus */
+    
+    padding: 10px;
+    width: 400px;
+    height: 25px;
+    border-radius: 15px;
+}
+
+/* Cuando el usuario hace click o escribe */
+.input-buscador:focus{
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.btn-buscar{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 30%;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: var(--linkHover);
+    font-size: 15px;
+    color: var(--backgroundContainer);
+}

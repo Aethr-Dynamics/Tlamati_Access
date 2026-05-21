@@ -1,0 +1,241 @@
+:root {
+    --background: #F5F5F5;
+    /* Arena del Valle */
+    --backgroundA9: rgba(245, 245, 245, 0.9);
+    /* Arena del Valle */
+    --backgroundContainer: #E0E0E0;
+    /* Sombra Suave  */
+    --titleH1: #0A3A56;
+    /* Azul Nocturno  */
+    --warning: #FFB74D;
+    /* Ámbar Oscuro */
+    --error: FF6B6B;
+    /* Rojo Carmesí */
+    --text: #212121;
+    /* Gris Carbón */
+    --slogan: #3FAFC5;
+    /* Gradas de Azul Anáhuac 300 */
+    --linkHover: #26A69A; /* Turquesa Prehispánica */
+
+    --primary-color: #0A3A56;
+    /* Indigo */
+    --secondary-color: #80DEEA;
+    /* Purple */
+    --bg-overlay: rgba(255, 255, 255, 0.9);
+    --text-dark: #212121;
+    /* Gris Carbón */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--text);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #f8fafc;
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+/* ----------+----------+---------- */
+/* ---------- IMAGE BACKGROUND ---------- */
+/* Fondo con imagen y overlay */
+.main-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-image: url('https://www.generacionuniversitaria.com.mx/wp-content/uploads/2025/02/plantel-uacm.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6);
+    /* Oscurecer un poco para que se lea el texto */
+}
+
+.content-container {
+    position: relative;
+    z-index: 1;
+    padding-top: 80px;
+    /* Espacio para el header */
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ----------+----------+---------- */
+/* ---------- HEADER ---------- */
+/* Contenedor de header */
+.system-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: var(--backgroundA9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+/* Titulo del header */
+.system-title {
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Icono de imagen */
+.icon-images {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+}
+
+/* ----------+----------+---------- */
+/* ---------- TAREJTAS AUTH ---------- */
+/* Tarjeta del Formulario */
+.auth-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.6s ease-out;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    color: var(--text-dark);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Inputs y Botones */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.form-control::placeholder {
+    color: #cbd5e1;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.875rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    font-weight: 600;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+}
+
+/* Enlaces secundarios */
+.auth-links {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.auth-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth-links a:hover {
+    color: var(--linkHover);
+    text-decoration: underline;
+}
+
+/* Animaciones */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-link {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ----------+----------+---------- */
+/* ---------- FOOTER ---------- */
+.footerTA {
+    background: var(--backgroundA9);
+    padding-top: 15px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.footerTASlogan {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--slogan);
+    margin: 2px;
+}
