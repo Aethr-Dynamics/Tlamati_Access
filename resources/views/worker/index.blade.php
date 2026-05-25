@@ -64,7 +64,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-                                    <th >Fotografia</th>
+                                    <th >fotografia_path</th>
 									<th >Nombre</th>
 									<th >Plantel</th>
 									<th >Puesto</th>
@@ -78,7 +78,7 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-                                        <td style="text-align: center; align-items: center;"> <img src="{{ asset('storage/' . $worker->fotografia) }}" style=" height: 70px;"> </td>
+                                        <td style="text-align: center; align-items: center;"> <img src="{{ asset('storage/' . $worker->fotografia_path) }}" style=" height: 70px;"> </td>
 										<td >{{ $worker->nombre }} {{ $worker->apellido_materno }} {{ $worker->apellido_paterno }}</td>
 										<td >{{ $worker->school->plantel ?? 'Sin sede' }}</td>
 										<td >{{ $worker->rol->rol ?? 'Sin rol' }}</td>

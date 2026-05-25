@@ -85,7 +85,7 @@
       <!--begin::Footer-->
       <footer class="app-footer" style="background-color: #E0E0E0;">
         <!--begin::To the end-->
-        <div class="float-end d-none d-sm-inline">DV - 3.4.0</div>
+        <div class="float-end d-none d-sm-inline">DV - 3.5.0</div>
         <!--end::To the end-->
         <!--begin::Copyright-->
         <strong>

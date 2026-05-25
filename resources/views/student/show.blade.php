@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    {{ $student->name ?? __('Show') . " " . __('Student') }}
+    Información del estudiante
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h4 class="mb-0">Estudiante: {{ $student->nombre }}</h4>
+                    <h3 class="mb-0">Estudiante: {{ $student->nombre }}</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -21,94 +21,196 @@
                 <div class="card card-outline card-primary">
                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="float-left">
-                            <span class="card-title">Información del estudiante</span>
+                            <span class="card-title">Datos del estudiante</span>
                         </div>
                     </div>
 
                     <div class="card-body bg-white">
                         
-                        <!-- <div class="row mb-3 text-center">
-                            <div class="col-md-4 themed-grid-col">.col-md-4</div> 
 
-                            <div class="col-md-8 themed-grid-col">
-                                
-                                <div class="row"> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                    <div class="col-md-6 themed-grid-col" style="text-align: left;">.col-md-6</div> 
-                                </div> 
-                            </div> 
-                        </div> -->
+                        <div class="row padding-1 p-1">
+                            <div class="col-md-12">
+                                <!-- Sección de Imagen -->
+                                <div class="row mb-4">
+                                    <div class="col-md-4">
+                                        <label for="fotografia_path" class="form-label">
+                                            {{ __('Fotografía') }}
+                                        </label>
 
-                        
-                        <div class="row mb-3 text-center">
-                            <div class="col-md-4 themed-grid-col">
-                                <div class="form-group mb-2 mb20" style="text-align: center; align-items: center;">
-                                    <img src="{{ asset('storage/' . $student->fotografia) }}" style=" height: 240px;">
-                                </div>
-                            </div> 
-
-                            <div class="col-md-8 themed-grid-col">
-                                
-                                <div class="row"> 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Matrícula:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;">
-                                        <p style="font-size: 20px;">
-                                            {{ substr($student->id_institucional, 0, 2) . '-' .
-                                            substr($student->id_institucional, 2, 3) . '-' .
-                                            substr($student->id_institucional, 5, 4) }}
-                                        </p>
+                                        <!-- Preview única -->
+                                        <div class="mt-2 form-group mb-2 mb20" style="text-align: center; align-items: center;">
+                                            <img
+                                                id="preview_image"
+                                                src="{{ $student->fotografia_path 
+                                                        ? asset('storage/' . $student->fotografia_path) 
+                                                        : 'https://via.placeholder.com/300x300?text=Sin+Imagen' }}"
+                                                alt="Vista previa"
+                                                class="img-fluid rounded shadow-sm border mb-2"
+                                                style="max-height: 300px;"
+                                            >
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Nombre:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->nombre }}</p></div> 
+                                    <!-- Sección del Formulario -->
+                                    <div class="col-md-8">
+                                        
+                                        <!-- Información general -->
+                                        <h6 class=" mb-3 data-campo"><i class="fas fa-info-circle" style="color: rgb(38, 166, 154);"></i> {{ __('Información general') }}</h6>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Apellido Materno:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->apellido_materno }}</p></div> 
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="id_institucional" class="form-label">{{ __('Matrícula') }}</label>
+                                            <div class="fs-5">
+                                                {{ 
+                                                    substr($student->id_institucional, 0, 2) . '-' . 
+                                                    substr($student->id_institucional, 2, 3) . '-' . 
+                                                    substr($student->id_institucional, 5, 4) 
+                                                }}                                                
+                                            </div>
+                                        </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Apellido Paterno:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->apellido_paterno }}</p></div> 
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="nombre" class="form-label">{{ __('Nombre') }}</label>
+                                            <div class="fs-5">
+                                                {{ $student->nombre }}
+                                            </div>
+                                        </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Email:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->email_institucional }}</p></div> 
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="apellido_paterno" class="form-label">{{ __('Apellido Paterno') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->apellido_paterno }}
+                                                </div>
+                                            </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Sede:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->school->plantel ?? 'Sin sede' }}</p></div> 
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="apellido_materno" class="form-label">{{ __('Apellido Materno') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->apellido_materno }}
+                                                </div>                                                
+                                            </div>
+                                        </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Puesto:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->rol->rol ?? 'Sin rol' }}</p></div> 
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="email_institucional" class="form-label">{{ __('Correo institucional') }}</label>
+                                            <div class="fs-5">
+                                                {{ $student->email_institucional }}
+                                            </div>
+                                        </div>
 
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Licenciatura:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->offer->nombre ?? 'Sin licenciatura' }}</p></div> 
-                                    
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Estado:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;">   
-                                        @if($student->estado == 1)
-                                            <p style="font-size: 20px; color: green;">Activo</p>
-                                        @else
-                                            <p style="font-size: 20px; color: red;">Inactivo</p>
-                                        @endif                                    
-                                    </div> 
-                                    
-                                    <div class="col-md-4 themed-grid-col" style="text-align: left;"><h4>Fecha Nacimiento:</h4></div> 
-                                    <div class="col-md-8 themed-grid-col" style="text-align: left;"><p style="font-size: 20px;">{{ $student->fecha_nacimiento }}</p></div> 
+                                        <hr class="my-4">
 
-                                </div> 
-                            </div> 
+                                        <!-- Campos Médicos -->
+                                        <h6 class="mb-3 data-campo"><i class="fas fa-hospital-user" style="color: rgb(38, 166, 154);"></i> {{ __('Datos de Salud y Emergencia') }}</h6>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="tipo_sangre" class="form-label">{{ __('Tipo de Sangre') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->tipo_sangre ?? 'No declarado' }}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="fecha_nacimiento" class="form-label">{{ __('Fecha de Nacimiento') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->fecha_nacimiento ?? 'No declarado' }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="telefono_emergencia" class="form-label">{{ __('Teléfono de Emergencia') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->telefono_emergencia ?? 'No declarado' }}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2 mb20">
+                                                <label for="alergias" class="form-label">{{ __('Alergias') }}</label>
+                                                <div class="fs-5">
+                                                    {{ $student->alergias ?? 'No declarado' }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <!-- Campos de Selección -->
+                                        <h6 class="mb-3 data-campo"><i class="fas fa-school" style="color: rgb(38, 166, 154);"></i> {{ __('Información Institucional') }}</h6>
+
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="id_school" class="input-group mb-3 form-label">Sede</label>
+                                            <div class="fs-5">
+                                                {{  $student->school->plantel ?? 'Sin sede' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="id_rol" class="input-group mb-3 form-label">Rol</label>
+                                            <div class="fs-5">
+                                                {{ $student->rol->rol ?? 'Sin rol' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="id_offer" class="input-group mb-3 form-label">Oferta Académica</label>
+                                            <div class="fs-5">
+                                                {{  $student->offer->nombre ?? 'Sin licenciatura' }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-2 mb20">
+                                            <label for="estado" class="form-label">{{ __('Estado') }}</label>
+                                            <div class="fs-5">
+                                                {{ $student->estado ?? 'Sin estado' }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- Script para previsualizar imagen -->
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+
+                            const fileInput = document.getElementById('fotografia_input');
+                            const previewImage = document.getElementById('preview_image');
+
+                            fileInput.addEventListener('change', function (e) {
+
+                                const file = e.target.files[0];
+
+                                if (!file) return;
+
+                                if (!file.type.startsWith('image/')) {
+                                    alert('Selecciona una imagen válida');
+                                    return;
+                                }
+
+                                const reader = new FileReader();
+
+                                reader.onload = function (event) {
+                                    previewImage.src = event.target.result;
+                                };
+
+                                reader.readAsDataURL(file);
+                            });
+
+                        });
+                        </script>
+                        
                         <hr>
                         <div class="row"><!-- row -->
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <a href="{{route('student.index')}}" class="btn btn-secondary">Cancelar</a>
+                                    <a href="{{ route('student.index') }}" class="btn btn-secondary">Cancelar</a>
                                 </div>
                             </div>
-                        </div><!-- /.row -->  
-
+                        </div><!-- /.row -->                                 
                     </div>
                 </div>
             </div>

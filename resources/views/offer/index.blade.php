@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Licenciaturas
+    Ofertas académicas
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                Oferta Académica
+                                Ofertas académicas
                             </span>
 
                              <div class="float-right">

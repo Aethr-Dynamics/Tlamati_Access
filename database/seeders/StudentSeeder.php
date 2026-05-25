@@ -36,7 +36,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2004-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111272/ico_220111272.png',
+                'fotografia_path'       => 'year_2026/students/220111272/ico_220111272.png',
             ],
             [
                 'id_institucional' => '220111273',
@@ -51,7 +51,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2003-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111273/ico_220111273.png',
+                'fotografia_path'       => 'year_2026/students/220111273/ico_220111273.png',
             ],
             [
                 'id_institucional' => '220111274',
@@ -66,7 +66,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2002-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111274/ico_220111274.png',
+                'fotografia_path'       => 'year_2026/students/220111274/ico_220111274.png',
             ],
             [
                 'id_institucional' => '220111275',
@@ -81,7 +81,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2001-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111275/ico_220111275.png',
+                'fotografia_path'       => 'year_2026/students/220111275/ico_220111275.png',
             ],
             [
                 'id_institucional' => '220111276',
@@ -96,7 +96,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2000-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111276/ico_220111276.png',
+                'fotografia_path'       => 'year_2026/students/220111276/ico_220111276.png',
             ],
             [
                 'id_institucional' => '220111277',
@@ -111,7 +111,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '1999-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111277/ico_220111277.png',
+                'fotografia_path'       => 'year_2026/students/220111277/ico_220111277.png',
             ],
             [
                 'id_institucional' => '220111278',
@@ -120,13 +120,13 @@ class StudentSeeder extends Seeder
                 'apellido_paterno' => 'Ortiz',
                 'email_institucional' => 'nadirjimenez@alumnos.uacm.edu.mx',
                 'id_school'        => 7,
-                'id_rol'           => 8,
+                'id_rol'           => 13,
                 'id_offer'         => 7,
                 'estado'           => '1',
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111278/ico_220111278.png',
+                'fotografia_path'       => 'year_2026/students/220111278/ico_220111278.png',
             ],
             [
                 'id_institucional' => '220111279',
@@ -141,7 +141,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111279/ico_220111279.png',
+                'fotografia_path'       => 'year_2026/students/220111279/ico_220111279.png',
             ],
             [
                 'id_institucional' => '220111280',
@@ -156,7 +156,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/220111280/ico_220111280.png',
+                'fotografia_path'       => 'year_2026/students/220111280/ico_220111280.png',
             ],            
 
             // --- Equipo de desarrollo
@@ -173,7 +173,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/210110995/ico_210110995.png',
+                'fotografia_path'       => 'year_2026/students/210110995/ico_210110995.png',
             ],            
             [
                 'id_institucional' => '210111262',
@@ -188,7 +188,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/210111262/ico_210111262.png',
+                'fotografia_path'       => 'year_2026/students/210111262/ico_210111262.png',
             ],            
             [
                 'id_institucional' => '200110828',
@@ -203,7 +203,7 @@ class StudentSeeder extends Seeder
                 'fecha_nacimiento' => '2025-05-20 07:29:10',
                 'created_at'       => Carbon::now(),
                 'updated_at'       => Carbon::now(),
-                'fotografia'       => 'year_2026/students/200110828/ico_200110828.png',
+                'fotografia_path'       => 'year_2026/students/200110828/ico_200110828.png',
             ],            
             // --- /Equipo de desarrollo
 

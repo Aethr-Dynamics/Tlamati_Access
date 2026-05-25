@@ -14,25 +14,34 @@ use App\Models\Offer;
 
 class StudentController extends Controller
 {
+
+
     /**
      * Mostrar una lista del recurso.
+     * 
+     * @param Request $request
+     * @return View
      */
     public function index(Request $request): View
     {
-        $students = Student::orderBy('nombre', 'asc')->paginate();
+        // Obtener trabajadores ordenados por nombre y paginados
+        $students = Student::orderBy('nombre', 'asc')->paginate(10);
 
         return view('student.index', compact('students'))
             ->with('i', ($request->input('page', 1) - 1) * $students->perPage());
     }
 
+
     /**
      * Mostrar el formulario para crear un nuevo recurso.
-     */
+    */
     public function create(): View
     {
         $student = new Student();
+
         $schools = School::pluck('plantel', 'id');
-        $rols = Rol::pluck('rol', 'id');
+        // Solo roles de estudiantes
+        $rols = Rol::where('id_department', 8)->pluck('rol', 'id');
         $offers = Offer::pluck('nombre', 'id');
 
         return view('student.create', compact('student', 'schools', 'rols', 'offers'));
@@ -64,7 +73,8 @@ class StudentController extends Controller
     public function edit(Student $student): View
     {
         $schools = School::pluck('plantel', 'id');
-        $rols = Rol::pluck('rol', 'id');
+        // Solo roles de estudiantes
+        $rols = Rol::where('id_department', 8)->pluck('rol', 'id');
         $offers = Offer::pluck('nombre', 'id');        
 
         return view('student.edit', compact('student', 'schools', 'rols', 'offers'));

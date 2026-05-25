@@ -23,7 +23,7 @@ class SchoolRequest extends FormRequest
     {
         return [
 			'plantel' => 'required|string',
-			'direccion' => 'string',
+			'direccion' => 'required|string',
 			'correo' => 'string',
 			'telefono' => 'string',
         ];
