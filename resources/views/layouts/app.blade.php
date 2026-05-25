@@ -46,7 +46,7 @@
                     <p class="footerTASlogan">Donde la tecnología reconoce tu identidad</p>
                 </div> 
                 <div class="col-md-6 themed-grid-col">
-                    <p style=" opacity: 0.7;margin:0">DV-3.1.0</p>
+                    <p style=" opacity: 0.7;margin:0">DV - 3.5.5</p>
                 </div> 
             </div>
 

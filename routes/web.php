@@ -11,6 +11,8 @@ use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\CodeqrController;
+use App\Http\Controllers\AttendanceLogController;
+use App\Http\Controllers\AttendanceHistoryController;
 
 Auth::routes(['register'=>true]);// Habilita la vista de registrar
 
@@ -26,6 +28,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('visitor', VisitorController::class);
     Route::resource('income', IncomeController::class);
     Route::resource('codeqr', CodeqrController::class);
+    Route::resource('attendance-log', AttendanceLogController::class);
+
+    // routes/api.php
+    Route::get('/attendance/{id}/history', [AttendanceHistoryController::class, 'show'])->name('attendance.history');
+    Route::post('/attendance/history/export', [AttendanceHistoryController::class, 'export'])->name('attendance.export');
+    Route::get('/attendance/{id}/status', [AttendanceHistoryController::class, 'getStatus'])->name('attendance.status');
 
     // Procedimiento para escanear un QR
     // Route::get('/buscar', [BusquedaController::class, 'index']);

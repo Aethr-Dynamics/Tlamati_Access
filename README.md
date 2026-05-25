@@ -105,11 +105,11 @@ El sistema mantiene un protocolo estricto de desarrollo basado en ramas funciona
 | Rama | Descripción | Propósito |
 |------|-------------|-----------|
 | `main` | Contiene el código base estable y certificado. | Versión lista para producción, sin funcionalidades de riesgo. |
-| `App_Movil_Qr` | Desarrollo de la aplicación para el sistema operativo Android, creada para usarse por parte de los estudiantes y trabajadores que pertenecen a la Universidad Autónoma de la Ciudad de México. El backend fue desarrollado con la plataforma Firebase, que tiene respaldo de Google.  |
-| `Docs` | Documentos desarrollados durante el desarrollo del proyecto, estando en su última versión y correspondientes con la etapa de desarrollo III. Todos en formato .PDF, respaldando el proceso de desarrollo y la metodología SCRUM llevada a cabo.  |
-| `feature/dv-01.05.00` | Primera versión lanzada del sistema web, desarrollada en la versión 13 de Laravel, contando con la estructura de base de datos establecida en las reuniones y documentación previas.  |
-| `feature/qr` | Integración del QR en el sistema Web, para su posterior integración con el sistema principal. |
-| `react-native-dev` | Diseño de la aplicación móvil para Android, usando los estilos del proyecto (paleta de colores y fuente de letra) establecidos en el Manual de Identidad. No tiene implementada ninguna funcionalidad; es solo el diseño a seguir para su posterior desarrollo. |
+| `App_Movil_Qr` | Desarrollo de la aplicación para el sistema operativo Android, creada para usarse por parte de los estudiantes y trabajadores que pertenecen a la Universidad Autónoma de la Ciudad de México. El backend fue desarrollado con la plataforma Firebase, que tiene respaldo de Google.  | Generar códigos QR de manera dinamica para facilitar el acceso. |
+| `Docs` | Documentos desarrollados durante el desarrollo del proyecto, estando en su última versión y correspondientes con la etapa de desarrollo III. Todos en formato .PDF, respaldando el proceso de desarrollo y la metodología SCRUM llevada a cabo.  | Evidencia del proceso llevado a acabo durante la etapa III del proyecto. |
+| `feature/dv-01.05.00` | Primera versión lanzada del sistema web, desarrollada en la versión 13 de Laravel, contando con la estructura de base de datos establecida en las reuniones y documentación previas.  | Usar la versión como base para el desarrollo Web del sistema. |
+| `feature/qr` | Integración del QR en el sistema Web, para su posterior integración con el sistema principal. | Realizar pruebbas unitarias antes de incluirla a la rama principal. |
+| `react-native-dev` | Diseño de la aplicación móvil para Android, usando los estilos del proyecto (paleta de colores y fuente de letra) establecidos en el Manual de Identidad. No tiene implementada ninguna funcionalidad; es solo el diseño a seguir para su posterior desarrollo. | Evitar cambios de diseño en la app movíl conforme se desarrolle.  |
 
 ### Historial detallado del Ciclo III
 
@@ -258,6 +258,52 @@ php artisan serve
 
 <p align="center">
   Código QR no existe en el sistema o no pertenece al sistema.
+</p>
+
+### Historial de aceso
+
+<p align="center">
+  <img src="assets/screenshots/attendance-log.png"
+       alt="Historial deacceso"
+       width="900">
+</p>
+
+<p align="center">
+  Historial de acceso en el plantel.
+
+### Acceso de estudiante
+
+<p align="center">
+  <img src="assets/screenshots/attendance-log_show.png"
+       alt="Historial deacceso de estudiantes"
+       width="900">
+</p>
+
+<p align="center">
+  Historial de acceso del estudiante
+
+### Lista de estudiantes
+
+<p align="center">
+  <img src="assets/screenshots/student.png"
+       alt="Estudiantes"
+       width="900">
+</p>
+
+<p align="center">
+  Lista de estudiantes
+</p>
+
+### Lista de trabajadores
+
+<p align="center">
+  <img src="assets/screenshots/worker.png"
+       alt="Trabjadores"
+       width="900">
+</p>
+
+<p align="center">
+  Lista de trabajadores
 </p>
 
 ---

@@ -41,6 +41,14 @@
                 </a>
             </li><!-- end::Options Menu -->
             
+            <!-- ---------- HISTORIAL ---------- -->
+            <li class="nav-item"><!-- begin::Options Menu -->
+                <a href="{{url('attendance-log')}}" class="nav-link">
+                    <i class="fa-solid fa-history" style="color: rgb(38, 166, 154);"></i>
+                    <p>Historial de acceso</p>
+                </a>
+            </li><!-- end::Options Menu -->
+            
             <!-- ---------- SCHOOL ---------- -->
             <li class="nav-header">Sedes</li>
             <li class="nav-item"><!-- begin::Options Menu -->
@@ -120,11 +128,11 @@
             </li><!-- end::Options Menu -->
             
             <!-- ---------- OFFERS ---------- -->
-            <li class="nav-header">Licenciatura</li>
+            <li class="nav-header">Oferta académico</li>
             <li class="nav-item"><!-- begin::Options Menu -->
                 <a href="#" class="nav-link">
                     <i class="fa-solid fa-building-columns" style="color: rgb(38, 166, 154);"></i>
-                    <p>Licenciaturas <i class="nav-arrow bi bi-chevron-right"></i> </p>
+                    <p>Oferta académica<i class="nav-arrow bi bi-chevron-right"></i> </p>
                 </a>
                 
                 <ul class="nav nav-treeview"><!-- begin::Opciones para el sub-menu -->
@@ -132,14 +140,14 @@
                     <li class="nav-item">
                         <a href="{{url('offer')}}" class="nav-link">
                             <i class="fa-solid fa-caret-right" style="color: #FFB74D;"></i>
-                            <p>Licenciatura</p>
+                            <p>Ofertas</p>
                         </a>
                     </li>
                     <!-- Opcion de sub-menu -->
                     <li class="nav-item">
                         <a href="{{url('offer/create')}}" class="nav-link">
                             <i class="fa-solid fa-caret-right" style="color: #FFB74D;"></i>
-                            <p>Nueva Licenciatura</p>
+                            <p>Nueva oferta</p>
                         </a>
                     </li>
                 </ul><!-- end::Opciones para el sub-menu -->
@@ -241,12 +249,12 @@
                         </a>
                     </li>
                     <!-- Opcion de sub-menu -->
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a href="{{url('income/create')}}" class="nav-link">
                             <i class="fa-solid fa-caret-right" style="color: #FFB74D;"></i>
                             <p>Nuevo ingreso</p>
                         </a>
-                    </li>
+                    </li> -->
                 </ul><!-- end::Opciones para el sub-menu -->
             </li><!-- end::Options Menu -->
             

@@ -9,10 +9,20 @@ use App\Http\Requests\OfferRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+/**
+ * Controlador para gestionar ofertas.
+ *
+ * Este controlador proporciona métodos para crear, mostrar, editar y eliminar
+ * registros de ofertas. Incluye protección contra inyecciones SQL mediante el uso
+ * de consultas preparadas.
+ */
 class OfferController extends Controller
 {
     /**
-     * Mostrar una lista del recurso.
+     * Muestra una lista del recurso.
+     *
+     * @param Request $request La solicitud HTTP.
+     * @return View Una vista con la lista de ofertas.
      */
     public function index(Request $request): View
     {
@@ -23,7 +33,9 @@ class OfferController extends Controller
     }
 
     /**
-     * Mostrar el formulario para crear un nuevo recurso.
+     * Muestra el formulario para crear un nuevo recurso.
+     *
+     * @return View Una vista con el formulario de creación.
      */
     public function create(): View
     {
@@ -34,6 +46,9 @@ class OfferController extends Controller
 
     /**
      * Guarda un recurso recién creado en el almacenamiento.
+     *
+     * @param OfferRequest $request La solicitud HTTP con los datos de la oferta.
+     * @return RedirectResponse Una redirección a la lista de ofertas con un mensaje de éxito.
      */
     public function store(OfferRequest $request): RedirectResponse
     {
@@ -44,7 +59,10 @@ class OfferController extends Controller
     }
 
     /**
-     * Mostrar el recurso especificado.
+     * Muestra los detalles de un recurso especificado.
+     *
+     * @param Offer $offer La oferta que se va a mostrar.
+     * @return View Una vista con los detalles de la oferta.
      */
     public function show(Offer $offer): View
     {
@@ -52,7 +70,10 @@ class OfferController extends Controller
     }
 
     /**
-     * Mostrar el formulario para editar el recurso especificado.
+     * Muestra el formulario para editar el recurso especificado.
+     *
+     * @param Offer $offer La oferta que se va a editar.
+     * @return View Una vista con el formulario de edición.
      */
     public function edit(Offer $offer): View
     {
@@ -61,6 +82,10 @@ class OfferController extends Controller
 
     /**
      * Actualiza el recurso especificado en el almacenamiento.
+     *
+     * @param OfferRequest $request La solicitud HTTP con los datos actualizados de la oferta.
+     * @param Offer $offer La oferta que se va a actualizar.
+     * @return RedirectResponse Una redirección a la lista de ofertas con un mensaje de éxito.
      */
     public function update(OfferRequest $request, Offer $offer): RedirectResponse
     {
@@ -72,7 +97,10 @@ class OfferController extends Controller
 
     /**
      * Elimina el recurso especificado en el almacenamiento.
-     */     
+     *
+     * @param Offer $offer La oferta que se va a eliminar.
+     * @return RedirectResponse Una redirección a la lista de ofertas con un mensaje de éxito.
+     */
     public function destroy(Offer $offer): RedirectResponse
     {
         $offer->delete();

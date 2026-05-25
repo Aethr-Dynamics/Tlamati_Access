@@ -5,7 +5,7 @@
 @section('content')
 <div class="auth-card">
     <div class="auth-header">
-        <h2>Recuperar cuenta</h2>
+        <h2  style="color: #0A3A56;">Recuperar cuenta</h2>
     </div>
 
     @if (session('status'))
@@ -20,7 +20,7 @@
         <!-- Email Input -->
         <div class="form-group">
             <label for="email" class="form-label text-secondary">
-                <i class="fas fa-envelope me-1"></i>{{ __('Correo Electrónico') }}
+                <i class="fas fa-envelope me-1" style="color: rgb(38, 166, 154);"></i>{{ __('Correo Electrónico') }}
             </label>
             
             <input id="email" type="email" 
@@ -37,20 +37,20 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary mt-4">
-            <i class="fa-solid fa-envelope-open-text"></i> Envíar enlace para recuperación
+            <i class="fa-solid fa-envelope-open-text" style="color: #E0E0E0;"></i> Envíar enlace para recuperación
         </button>
     </form>
 
     <!-- Enlaces de Ayuda -->
     <div class="auth-links fade-in-link">
         <a class="btn btn-link" href="{{ route('login') }}">
-            <i class="fa-solid fa-right-to-bracket fa-flip-horizontal"></i> Acceder
+            <i class="fa-solid fa-right-to-bracket fa-flip-horizontal" style="color: rgb(38, 166, 154);"></i> Acceder
         </a>
         
         <span class="text-muted mx-2">|</span>
 
         <a href="{{ route('register') }}" style="color: var(--primary-color); text-decoration: none;">
-            <i class="fa-solid fa-user-plus"></i> Crear cuenta
+            <i class="fa-solid fa-user-plus" style="color: rgb(38, 166, 154);"></i> Crear cuenta
         </a>
     </div>
 </div>

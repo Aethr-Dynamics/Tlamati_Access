@@ -5,7 +5,7 @@
 @section('content')
 <div class="auth-card">
     <div class="auth-header">
-        <h2>Restablecer contraseña</h2>
+        <h2  style="color: #0A3A56;">Restablecer contraseña</h2>
     </div>
 
     <form method="POST" action="{{ route('password.update') }}">

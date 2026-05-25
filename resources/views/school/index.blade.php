@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Planteles y sedes de la UACM</h3>
+                    <h3 class="mb-0">Lista de Planteles y sedes de la UACM</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                Planteles y sedes de la UACM
+                                {{ __('Planteles y sedes de la UACM') }}
                             </span>
 
                              <div class="float-right">
@@ -61,7 +61,9 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
-                                    <tr>                                        
+                                    <tr>     
+                                        <th>No</th>
+
 									<th >Plantel</th>
 									<th >Direccion</th>
 									<th >Correo</th>
@@ -72,7 +74,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($schools as $school)
-                                        <tr>                                            
+                                        <tr>  
+                                            <td>{{ ++$i }}</td>
+
 										<td >{{ $school->plantel }}</td>
 										<td >{{ $school->direccion }}</td>
 										<td >{{ $school->correo }}</td>
@@ -88,9 +92,9 @@
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                        <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
                                                             <i class="fa fa-fw fa-trash" style="color: #E0E0E0"></i> {{ __('Delete') }}
-                                                        </button>
+                                                        </button> -->
                                                 </form>
                                             </td>
                                         </tr>

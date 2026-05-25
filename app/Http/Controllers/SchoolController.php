@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SchoolRequest;
@@ -8,14 +9,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+/**
+ * Controlador para gestionar escuelas.
+ *
+ * Este controlador proporciona métodos para crear, mostrar, editar y eliminar
+ * registros de escuelas. Incluye protección contra inyecciones SQL mediante el uso
+ * de consultas preparadas.
+ */
 class SchoolController extends Controller
 {
     /**
-     * Mostrar una lista del recurso.
+     * Muestra una lista del recurso.
+     *
+     * @param Request $request La solicitud HTTP.
+     * @return View Una vista con la lista de escuelas.
      */
     public function index(Request $request): View
     {
-
         $schools = School::orderBy('plantel', 'asc')->paginate();
 
         return view('school.index', compact('schools'))
@@ -23,7 +33,9 @@ class SchoolController extends Controller
     }
 
     /**
-     * Mostrar el formulario para crear un nuevo recurso.
+     * Muestra el formulario para crear un nuevo recurso.
+     *
+     * @return View Una vista con el formulario de creación.
      */
     public function create(): View
     {
@@ -34,6 +46,9 @@ class SchoolController extends Controller
 
     /**
      * Guarda un recurso recién creado en el almacenamiento.
+     *
+     * @param SchoolRequest $request La solicitud HTTP con los datos de la escuela.
+     * @return RedirectResponse Una redirección a la lista de escuelas con un mensaje de éxito.
      */
     public function store(SchoolRequest $request): RedirectResponse
     {
@@ -44,16 +59,21 @@ class SchoolController extends Controller
     }
 
     /**
-     * Mostrar el recurso especificado.
+     * Muestra los detalles de un recurso especificado.
+     *
+     * @param School $school La escuela que se va a mostrar.
+     * @return View Una vista con los detalles de la escuela.
      */
     public function show(School $school): View
     {
-
         return view('school.show', compact('school'));
     }
 
     /**
-     * Mostrar el formulario para editar el recurso especificado.
+     * Muestra el formulario para editar el recurso especificado.
+     *
+     * @param School $school La escuela que se va a editar.
+     * @return View Una vista con el formulario de edición.
      */
     public function edit(School $school): View
     {
@@ -62,15 +82,23 @@ class SchoolController extends Controller
 
     /**
      * Actualiza el recurso especificado en el almacenamiento.
+     *
+     * @param SchoolRequest $request La solicitud HTTP con los datos actualizados de la escuela.
+     * @param School $school La escuela que se va a actualizar.
+     * @return RedirectResponse Una redirección a la lista de escuelas con un mensaje de éxito.
      */
     public function update(SchoolRequest $request, School $school): RedirectResponse
     {
         $school->update($request->validated());
+
         return Redirect::route('school.index')->with('success', 'School updated successfully');
     }
 
     /**
      * Elimina el recurso especificado en el almacenamiento.
+     *
+     * @param School $school La escuela que se va a eliminar.
+     * @return RedirectResponse Una redirección a la lista de escuelas con un mensaje de éxito.
      */
     public function destroy(School $school): RedirectResponse
     {

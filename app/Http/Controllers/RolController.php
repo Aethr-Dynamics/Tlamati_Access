@@ -10,10 +10,20 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Department;
 
+/**
+ * Controlador para gestionar roles.
+ *
+ * Este controlador proporciona métodos para crear, mostrar, editar y eliminar
+ * registros de roles. Incluye protección contra inyecciones SQL mediante el uso
+ * de consultas preparadas.
+ */
 class RolController extends Controller
 {
     /**
-     * Mostrar una lista del recurso.
+     * Muestra una lista del recurso.
+     *
+     * @param Request $request La solicitud HTTP.
+     * @return View Una vista con la lista de roles.
      */
     public function index(Request $request): View
     {
@@ -24,19 +34,23 @@ class RolController extends Controller
     }
 
     /**
-     * Mostrar el formulario para crear un nuevo recurso.
+     * Muestra el formulario para crear un nuevo recurso.
+     *
+     * @return View Una vista con el formulario de creación y los departamentos disponibles.
      */
     public function create(): View
     {
         $rol = new Rol();
         $departments = Department::pluck('nombre', 'id');
 
-        // return view('rol.create', compact('rol'));
         return view('rol.create', compact('rol', 'departments'));
     }
 
     /**
      * Guarda un recurso recién creado en el almacenamiento.
+     *
+     * @param RolRequest $request La solicitud HTTP con los datos del rol.
+     * @return RedirectResponse Una redirección a la lista de roles con un mensaje de éxito.
      */
     public function store(RolRequest $request): RedirectResponse
     {
@@ -47,7 +61,10 @@ class RolController extends Controller
     }
 
     /**
-     * Mostrar el recurso especificado.
+     * Muestra los detalles de un recurso especificado.
+     *
+     * @param Rol $rol El rol que se va a mostrar.
+     * @return View Una vista con los detalles del rol.
      */
     public function show(Rol $rol): View
     {
@@ -55,18 +72,24 @@ class RolController extends Controller
     }
 
     /**
-     * Mostrar el formulario para editar el recurso especificado.
+     * Muestra el formulario para editar el recurso especificado.
+     *
+     * @param Rol $rol El rol que se va a editar.
+     * @return View Una vista con el formulario de edición y los departamentos disponibles.
      */
     public function edit(Rol $rol): View
     {
         $departments = Department::pluck('nombre', 'id');
 
-        // return view('rol.edit', compact('rol'));
         return view('rol.edit', compact('rol', 'departments'));
     }
 
     /**
      * Actualiza el recurso especificado en el almacenamiento.
+     *
+     * @param RolRequest $request La solicitud HTTP con los datos actualizados del rol.
+     * @param Rol $rol El rol que se va a actualizar.
+     * @return RedirectResponse Una redirección a la lista de roles con un mensaje de éxito.
      */
     public function update(RolRequest $request, Rol $rol): RedirectResponse
     {
@@ -78,7 +101,10 @@ class RolController extends Controller
 
     /**
      * Elimina el recurso especificado en el almacenamiento.
-     */    
+     *
+     * @param Rol $rol El rol que se va a eliminar.
+     * @return RedirectResponse Una redirección a la lista de roles con un mensaje de éxito.
+     */
     public function destroy(Rol $rol): RedirectResponse
     {
         $rol->delete();

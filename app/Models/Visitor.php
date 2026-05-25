@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 /**
  * Class Visitor
@@ -37,15 +39,80 @@ class Visitor extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [ 'id_visitante', 'nombre', 'apellido_paterno', 'apellido_materno', 'motivo', 'es_menor', 'identificacion', 'code_qr', 'reactivacion', 'fechas_impresion'];
+    protected $fillable = [
+        'nombre',
+        'apellido_paterno',
+        'apellido_materno',
+        'motivo',
+        'es_menor',
+        'identificacion',
+    ];    
 
+    protected $casts = [
+        'fechas_impresion' => 'array',
+        'es_menor' => 'boolean',
+        'reactivacion' => 'boolean',
+    ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * Generar ID automático antes de crear
      */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($visitor) {
+
+            // Generar ID único
+            do {
+                $id = strtoupper(Str::random(rand(10, 20)));
+            } while (self::where('id_visitante', $id)->exists());
+
+            $visitor->id_visitante = $id;
+
+            // Fecha inicial
+            $visitor->fechas_impresion = [
+                now()->toDateTimeString()
+            ];
+        });
+    }
+
+    public function getUltimaFechaFormateadaAttribute()
+    {
+        $fecha = collect($this->fechas_impresion)->last();
+
+        return $fecha
+            ? Carbon::parse($fecha)->format('d/m/Y H:i:s')
+            : 'Sin registros';
+    }  
+
+    public function getFechasImpresionFormateadasAttribute()
+    {
+        if (empty($this->fechas_impresion)) {
+            return [];
+        }
+
+        return collect($this->fechas_impresion)->map(function ($fecha) {
+            return Carbon::parse($fecha)->format('d/m/Y H:i:s');
+        });
+    }
+
+    /**
+     * Relaciones
+     */
+    public function codeQr()
+    {
+        return $this->hasOne(\App\Models\CodeQr::class, 'id_visitor');
+    }
+
     public function incomes()
     {
-        return $this->hasMany(\App\Models\Income::class, 'id', 'id_visitor');
+        return $this->hasMany(\App\Models\Income::class, 'id_visitor');
     }
-    
+
+    public function attendanceLogs()
+    {
+        return $this->hasMany(\App\Models\AttendanceLog::class, 'id_visitor');
+    }
+
 }

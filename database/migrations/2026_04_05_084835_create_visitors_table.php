@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('id_visitante', 20)->unique();
             $table->string('nombre', 255)->notNullable();
             $table->string('apellido_paterno', 255)->notNullable();
-            $table->string('apellido_materno', 255)->nullable();
+            $table->string('apellido_materno', 255)->notNullable();
             $table->text('motivo')->notNullable();
-            $table->tinyInteger('es_menor')->default(0);  // Cambiado de "menor" a "es_menor"
-            $table->string('identificacion', 255);
-            $table->string('code_qr', 500);
-            $table->tinyInteger('reactivacion')->default(0);
-            $table->json('fechas_impresion');
+            $table->tinyInteger('es_menor')->default(0)->notNullable();  // Cambiado de "menor" a "es_menor"
+            $table->string('identificacion', 255)->notNullable();
+            $table->string('code_qr', 500)->nullable();
+            $table->tinyInteger('reactivacion')->default(0)->nullable();
+            $table->json('fechas_impresion')->notNullable();
             $table->timestamps();
         });
     }

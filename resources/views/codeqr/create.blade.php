@@ -90,9 +90,9 @@
         
                     <div class="col-md-3 text-center">
         
-                        @if(session('user')['fotografia'])
+                        @if(session('user')['fotografia_path'])
         
-                            <img src="{{ asset(session('user')['fotografia']) }}"
+                            <img src="{{ asset(session('user')['fotografia_path']) }}"
                                 class="img-fluid shadow"
                                 style="height:180px; object-fit:cover;">
         
@@ -101,47 +101,67 @@
                     </div>
         
                     <div class="col-md-9">
-        
-                        <table class="table table-bordered">
-        
-                            <tr>
-                                <th>Matricula</th>
-                                <td>{{ session('user')['id_institucional'] }}</td>
-                            </tr>
-        
-                            <tr>
-                                <th>Nombre</th>
-                                <td>
+
+                        <div class="row"> 
+                            
+                            <!-- Fila I -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Matricula</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">{{ session('user')['id_institucional'] }}</p>
+                            </div> 
+                            
+                            <!-- Fila II -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Nombre</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">
                                     {{ session('user')['nombre'] }}
                                     {{ session('user')['apellido_paterno'] }}
                                     {{ session('user')['apellido_materno'] }}
-                                </td>
-                            </tr>
-        
-                            <tr>
-                                <th>Correo Institucional</th>
-                                <td>{{ session('user')['email_institucional'] }}</td>
-                            </tr>
-        
-                            <tr>
-                                <th>Plantel</th>
-                                <td>{{ session('user')['school_name'] }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Rol</th>
-                                <td>{{ session('user')['rol_name'] }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Oferta Educativa</th>
-                                <td>{{ session('user')['offer_name'] }}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Estado</th>
-                                <td>
-
+                                </p>
+                            </div> 
+                            
+                            <!-- Fila III -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Correo Institucional</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">{{ session('user')['email_institucional'] }}</p>
+                            </div> 
+                            
+                            <!-- Fila IV -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Plantel</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">{{ session('user')['school_name'] }}</p>
+                            </div> 
+                            
+                            <!-- Fila V -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Puesto</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">{{ session('user')['rol_name'] }}</p>
+                            </div> 
+                            
+                            <!-- Fila VI -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Oferta Educativa</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">{{ session('user')['offer_name'] }}</p>
+                            </div> 
+                            
+                            <!-- Fila VII -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Estado</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">
                                     @if(session('user')['estado'] == 1)
 
                                         <span class="badge bg-success">
@@ -155,21 +175,24 @@
                                         </span>
 
                                     @endif
+                                </p>
+                            </div> 
 
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Tipo</th>
-                                <td>
+                            <!-- Fila VIII -->
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="form-label">Tipo</p>
+                            </div> 
+                            <div class="col-md-6 themed-grid-col">
+                                <p class="fs-5">
                                     @if(session('type') === 'students')
                                         Estudiante
                                     @else
                                         Trabajador
                                     @endif
-                                </td>
-                            </tr>
-        
-                        </table>
+                                </p>
+                            </div>                             
+                            
+                        </div>
         
                         <form action="{{ route('codeqr.generate') }}"
                             method="POST">

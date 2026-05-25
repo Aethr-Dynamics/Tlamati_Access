@@ -25,11 +25,12 @@ class StudentRequest extends FormRequest
 			'nombre' => 'required|string',
 			'apellido_materno' => 'required|string',
 			'apellido_paterno' => 'required|string',
+			'id_institucional' => 'required|string',
+			'email_institucional' => 'required|string',
 			'id_school' => 'required',
 			'id_rol' => 'required',
 			'id_offer' => 'required',
 			'estado' => 'required|string',
-			'fecha_nacimiento' => 'required',
 			'fotografia' => 'string',
         ];
     }

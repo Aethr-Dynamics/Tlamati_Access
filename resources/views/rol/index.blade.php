@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Roles
+    Puestos
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Puestos</h3>
+                    <h3 class="mb-0">Lista de puestos</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                Puestos
+                                {{ __('Puestos') }}                                
                             </span>
 
                              <div class="float-right">
@@ -62,6 +62,8 @@
                             <table class="table table-striped table-hover">
                                 <thead class="thead">
                                     <tr>                                        
+                                        <th>No</th>
+
 									<th >Puesto</th>
 									<th >Departamento</th>
 									<th >Descripcion</th>
@@ -71,7 +73,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rols as $rol)
-                                        <tr>                                            
+                                        <tr>           
+                                            <td>{{ ++$i }}</td>
+
 										<td >{{ $rol->rol }}</td>
 										<!-- <td >{{ $rol->id_department }}</td> -->
 										<td>{{ $rol->department->nombre ?? 'Sin departamento' }}</td>
@@ -87,9 +91,9 @@
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                        <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
                                                             <i class="fa fa-fw fa-trash" style="color: #E0E0E0"></i> {{ __('Delete') }}
-                                                        </button>
+                                                        </button> -->
                                                 </form>
                                             </td>
                                         </tr>

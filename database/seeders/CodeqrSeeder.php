@@ -223,6 +223,15 @@ class CodeqrSeeder extends Seeder
                 'is_revoked'   => false,
                 'qr_image' => 'year_2026/students/220111272/QR_students_220111272.png',
             ],
+            [
+                'id_student'   => 13,
+                'id_worker'    => null,
+                'id_visitor'   => null,
+                'access_token' => '33cdc6da5c57866509930466c4c4216dd82ff1848ca60941aa59dd977aab254f',
+                'token_hash'   => '46d0a17cecde81eabf92cb1509f3d710bff08e7d04bee09be76e3d420d8fcf54',
+                'is_revoked'   => false,
+                'qr_image' => 'year_2026/students/210110994/QR_students_210110994.svg',
+            ],
 
             // ----------------------------------
             // Equipo de desarrololo

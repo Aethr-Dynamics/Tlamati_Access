@@ -10,15 +10,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @property $id
  * @property $id_institucional
+ * @property $email_institucional
  * @property $nombre
  * @property $apellido_materno
  * @property $apellido_paterno
+ * @property $alergias
+ * @property $tipo_sangre
+ * @property $telefono_emergencia
  * @property $id_school
  * @property $id_rol
  * @property $id_offer
  * @property $estado
  * @property $fecha_nacimiento
- * @property $fotografia
+ * @property $fotografia_path
  * @property $created_at
  * @property $updated_at
  *
@@ -40,7 +44,21 @@ class Student extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [ 'id_institucional', 'nombre', 'apellido_materno', 'apellido_paterno', 'id_school', 'id_rol', 'id_offer', 'estado', 'fecha_nacimiento', 'fotografia'];
+    protected $fillable = [
+        'id_institucional', 
+        'email_institucional', 
+        'nombre', 
+        'apellido_materno', 
+        'apellido_paterno', 
+        'alergias', 
+        'tipo_sangre', 
+        'fecha_nacimiento', 
+        'telefono_emergencia', 
+        'id_school', 
+        'id_rol', 
+        'id_offer', 
+        'estado', 
+        'fotografia_path'];
 
 
     /**

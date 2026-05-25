@@ -3,7 +3,7 @@
 
 <div class="auth-card">
     <div class="auth-header">
-        <h2>Crear cuenta</h2>
+        <h2 style="color: #0A3A56;">Crear cuenta</h2>
     </div>
 
     <form method="POST" action="{{ route('register') }}">

@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
         // =========================================================
-        // PRIMERA GRÁFICA (OPTIMIZADA Y CORREGIDA)
+        // PRIMERA GRÁFICA
         // =========================================================
 
         $workerData  = array_fill(0, 7, 0);
@@ -51,23 +51,70 @@ class DashboardController extends Controller
         }
 
         // =========================================================
-        // CONTADORES DEL DÍA (CORREGIDO)
-        // =========================================================  
+        // CONTADORES DEL DÍA
+        // =========================================================
+
+        // Obtener el último movimiento de cada usuario HOY
+        $ultimosRegistros = DB::table('attendance_logs as al')
+            ->select(
+                'al.user_type',
+                'al.id_student',
+                'al.id_worker',
+                'al.id_visitor',
+                'al.action'
+            )
+            ->join(
+                DB::raw('
+                    (
+                        SELECT
+                            MAX(id) as ultimo_id
+                        FROM attendance_logs
+                        WHERE DATE(accessed_at) = CURRENT_DATE
+                        GROUP BY
+                            id_student,
+                            id_worker,
+                            id_visitor
+                    ) as ultimos
+                '),
+                'al.id',
+                '=',
+                'ultimos.ultimo_id'
+            )
+            ->get();
+
+        // Inicializar contadores
+        $workerCount  = 0;
+        $studentCount = 0;
+        $visitorCount = 0;
+
+        // Contar solamente usuarios cuya última acción fue "entry"
+        foreach ($ultimosRegistros as $registro) {
+
+            if ($registro->action === 'entry') {
+
+                switch ($registro->user_type) {
+
+                    case 'worker':
+                        $workerCount++;
+                        break;
+
+                    case 'student':
+                        $studentCount++;
+                        break;
+
+                    case 'visitor':
+                        $visitorCount++;
+                        break;
+                }
+            }
+        }
+
+        // =========================================================
+        // SEGUNDA GRÁFICA
+        // =========================================================
         $startCon = Carbon::now($tz)->startOfDay();
         $endCon   = Carbon::now($tz)->endOfDay();
-
-        $counts = DB::table('incomes')
-            ->selectRaw("
-                SUM(CASE WHEN con_worker = 1 THEN 1 ELSE 0 END) as workers,
-                SUM(CASE WHEN con_student = 1 THEN 1 ELSE 0 END) as students,
-                SUM(CASE WHEN con_visitor = 1 THEN 1 ELSE 0 END) as visitors
-            ")
-            ->whereBetween('created_at', [$startCon, $endCon])
-            ->first();
-
-        // =========================================================
-        // SEGUNDA GRÁFICA (SIN CAMBIOS GRANDES)
-        // =========================================================
+        
         $ofertasData = DB::table('incomes as i')
             ->leftJoin('students as s', 'i.id_student', '=', 's.id')
             ->leftJoin('offers as o', 's.id_offer', '=', 'o.id')
@@ -128,9 +175,9 @@ class DashboardController extends Controller
         return view('index', [
             'dias'          => $dias,
 
-            'studentCount'  => (int) $counts->students,
-            'workerCount'   => (int) $counts->workers,
-            'visitorCount'  => (int) $counts->visitors,
+            'studentCount'  => $studentCount,
+            'workerCount'   => $workerCount,
+            'visitorCount'  => $visitorCount,            
 
             'workerData'    => $workerData,
             'studentData'   => $studentData,

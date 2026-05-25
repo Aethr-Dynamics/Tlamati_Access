@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Nueva licenciatura</h3>
+                    <h3 class="mb-0">Registrar un nuevo grado de estudio</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->

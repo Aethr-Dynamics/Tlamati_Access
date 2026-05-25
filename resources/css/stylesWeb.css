@@ -15,7 +15,8 @@
     /* Gris Carbón */
     --slogan: #3FAFC5;
     /* Gradas de Azul Anáhuac 300 */
-    --linkHover: #26A69A; /* Turquesa Prehispánica */
+    --linkHover: #26A69A;
+    /* Turquesa Prehispánica */
 
     --primary-color: #0A3A56;
     /* Indigo */
@@ -39,27 +40,30 @@ body {
     color: var(--text);
     overflow-x: hidden;
 }
- c
 
-/* ----------+----------+---------- */
+/* ------------+------------+------------ */
 /* ---------- Escanear usuario ---------- */
-.contenedor-input{
+/* ------------+------------+------------ */
+
+.contenedor-input {
     display: row;
     justify-content: center;
     align-items: center;
 }
 
-.buscador-box{
+.buscador-box {
     background: #E0E0E0;
     border-radius: 50px;
     padding: 10px;
 }
 
-.input-buscador{
+.input-buscador {
     border: none;
-    outline: none;          /* Quita el borde negro */
-    box-shadow: none;       /* Evita sombras de focus */
-    
+    outline: none;
+    /* Quita el borde negro */
+    box-shadow: none;
+    /* Evita sombras de focus */
+
     padding: 10px;
     width: 400px;
     height: 25px;
@@ -67,13 +71,13 @@ body {
 }
 
 /* Cuando el usuario hace click o escribe */
-.input-buscador:focus{
+.input-buscador:focus {
     outline: none;
     box-shadow: none;
     border: none;
 }
 
-.btn-buscar{
+.btn-buscar {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 30%;
@@ -83,4 +87,66 @@ body {
     background-color: var(--linkHover);
     font-size: 15px;
     color: var(--backgroundContainer);
+}
+
+
+/* --------------+-------------+-------------- */
+/* ---------- Campos del formulario ---------- */
+/* --------------+-------------+-------------- */
+
+/* Estilos mejorados para el formulario */
+.form-label {
+    font-weight: 600;
+    color: #0D4A6B;
+    font-size: 18px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.data-campo {
+    color: #26A69A;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.border {
+    border-color: #dee2e6 !important;
+}
+
+/* Botones mejorados */
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .col-md-3,
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
+
+    .row {
+        flex-direction: column !important;
+    }
 }

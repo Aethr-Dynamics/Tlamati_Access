@@ -22,15 +22,12 @@ class VisitorRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'nombre' => 'required|string',
-			'apellido_paterno' => 'required|string',
-			'apellido_materno' => 'string',
-			'motivo' => 'required|string',
-			'es_menor' => 'required',
-			'identificacion' => 'required|string',
-			'code_qr' => 'required|string',
-			'reactivacion' => 'required',
-			'fechas_impresion' => 'required',
+            'nombre' => 'required|string|max:255',
+            'apellido_paterno' => 'required|string|max:255',
+            'apellido_materno' => 'nullable|string|max:255',
+            'motivo' => 'required|string',
+            'es_menor' => 'required|boolean',
+            'identificacion' => 'required|string|max:255',
         ];
     }
 }

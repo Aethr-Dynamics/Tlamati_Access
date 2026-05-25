@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 /**
  * Class Income
@@ -36,6 +38,25 @@ class Income extends Model
      */
     protected $fillable = ['con_worker', 'con_student', 'con_visitor', 'id_student', 'id_worker', 'id_visitor'];
 
+    public function getUltimaFechaFormateadaAttribute()
+    {
+        $fecha = collect($this->fechas_impresion)->last();
+
+        return $fecha
+            ? Carbon::parse($fecha)->format('d/m/Y H:i:s')
+            : 'Sin registros';
+    }  
+
+    public function getFechasImpresionFormateadasAttribute()
+    {
+        if (empty($this->fechas_impresion)) {
+            return [];
+        }
+
+        return collect($this->fechas_impresion)->map(function ($fecha) {
+            return Carbon::parse($fecha)->format('d/m/Y H:i:s');
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

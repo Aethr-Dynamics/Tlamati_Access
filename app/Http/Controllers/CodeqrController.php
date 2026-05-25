@@ -96,10 +96,6 @@ class CodeqrController extends Controller
             'type' => 'required'
         ]);
 
-        echo("<br>");
-        echo("ID:" .$request->id );
-        echo("<br>");
-
         $type = $request->type;
 
         $table = $type === 'students'

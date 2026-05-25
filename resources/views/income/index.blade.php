@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Registro de Ingresos
+    Ingresos
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Registro de Ingresos</h3>
+                    <h3 class="mb-0">Lista de ingresos</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -23,14 +23,14 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Incomes') }}
+                                {{ __('Ingresos') }}
                             </span>
-
-                             <div class="float-right">
+<!-- 
+                            <div class="float-right">
                                 <a href="{{ route('income.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  <i class="fa-solid fa-person-arrow-down-to-line" style="color: #E0E0E0;"></i> Nueva entrada
+                                    <i class="fa-solid fa-person-arrow-down-to-line" style="color: #E0E0E0;"></i> Nueva entrada
                                 </a>
-                              </div>
+                            </div> -->
                         </div>
                     </div>
                     @if (Session::has('success'))
@@ -105,16 +105,16 @@
                                             <td>
                                                 <form action="{{ route('income.destroy', $income->id) }}" method="POST">
                                                     <a class="btn btn-sm btn-primary" href="{{ route('income.show', $income->id) }}">
-                                                        <i class="fa fa-fw fa-eye"></i> Ver
+                                                        <i class="fa fa-fw fa-eye" style="color: #E0E0E0;"></i> Ver
                                                     </a>
                                                     <a class="btn btn-sm btn-success" href="{{ route('income.edit', $income->id) }}">
-                                                        <i class="fa fa-fw fa-edit"></i> Editar
+                                                        <i class="fa fa-fw fa-edit"  style="color: #E0E0E0;"></i> Editar
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm btn-delete">
-                                                        <i class="fa fa-fw fa-trash"></i> Eliminar
-                                                    </button>
+                                                    <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                        <i class="fa fa-fw fa-trash"  style="color: #E0E0E0;"></i> Eliminar
+                                                    </button> -->
                                                 </form>
                                             </td>
                                         </tr>

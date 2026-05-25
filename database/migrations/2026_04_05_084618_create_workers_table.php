@@ -13,18 +13,30 @@ return new class extends Migration
     {
         Schema::create('workers', function (Blueprint $table) {
             $table->id()->unique();
-            $table->string('id_institucional', 9)->unique();
-            $table->string('email_institucional')->unique();
+
+            $table->string('id_institucional', 9)->unique(); // Mantener
+            $table->string('email_institucional')->unique(); // Permitir null si no tiene aún
             $table->string('nombre', 255)->notNullable();
             $table->string('apellido_materno', 255)->notNullable();
             $table->string('apellido_paterno', 255)->notNullable();
-            
+
+            // Alergias y Salud
+            $table->json('alergias')->nullable(); // Usar JSON para múltiples alergias (ej: ["Peanuts", "Penicilina"])
+            $table->string('tipo_sangre', 10)->nullable()->default(null); 
+            $table->date('fecha_nacimiento')->notNullable();
+            $table->string('telefono_emergencia', 20)->nullable(); // Formato flexible
+
+            // Relaciones
             $table->foreignId('id_school')->constrained('schools');
             $table->foreignId('id_rol')->constrained('rols');
             $table->foreignId('id_offer')->constrained('offers');
-            
-            $table->string('estado', 10)->notNullable()->default('ACTIVO');
-            $table->longText('fotografia')->nullable();
+
+            // Estado y Seguridad
+            $table->string('estado', 10)->notNullable()->default('activo'); // Valores: activo, inactivo, suspendido
+
+            // Foto (Recomendado guardar ruta en lugar de base64)
+            $table->string('fotografia_path', 255)->nullable(); 
+
             $table->timestamps();
         });
     }

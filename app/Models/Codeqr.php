@@ -34,7 +34,14 @@ class Codeqr extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['id_student', 'id_worker', 'id_visitor', 'access_token', 'token_hash', 'expires_at', 'is_revoked'];
+    protected $fillable = [
+        'id_student', 
+        'id_worker', 
+        'id_visitor', 
+        'access_token', 
+        'token_hash', 
+        'expires_at', 
+        'is_revoked'];
 
 
     /**

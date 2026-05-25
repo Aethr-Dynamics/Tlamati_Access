@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Visitors') }}
+                                {{ __('Visitantes') }}
                             </span>
 
                              <div class="float-right">
@@ -67,7 +67,6 @@
 									<th >Nombre</th>
 									<th >Motivo</th>
 									<th >Es Menor</th>
-									<th >Reactivacion</th>
 									<th >Fechas Impresion</th>
 
                                         <th></th>
@@ -80,25 +79,23 @@
                                             
 										<td >{{ $visitor->nombre }} {{ $visitor->apellido_paterno }} {{ $visitor->apellido_materno }}</td>
 										<td >{{ $visitor->motivo }}</td>
-										<td >{{ $visitor->es_menor }}</td>
-										<td >{{ $visitor->reactivacion }}</td>
-										<td >{{ $visitor->fechas_impresion }}</td>
-
-                                            <td>
-                                                <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('visitor.show', $visitor->id) }}">
-                                                        <i class="fa fa-fw fa-eye" style="color: #E0E0E0;"></i> {{ __('Show') }}
-                                                    </a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('visitor.edit', $visitor->id) }}">
-                                                        <i class="fa fa-fw fa-edit" style="color: #E0E0E0;"></i> {{ __('Edit') }}
-                                                    </a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm btn-delete">
-                                                        <i class="fa fa-fw fa-trash" style="color: #E0E0E0;"></i> {{ __('Delete') }}
-                                                    </button>
-                                                </form>
-                                            </td>
+										<td >{{ $visitor->es_menor == 1 ? 'Sí' : 'No' }}</td>
+                                        <td>{{ $visitor->ultima_fecha_formateada }}</td>
+                                        <td>
+                                            <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST">
+                                                <a class="btn btn-sm btn-primary " href="{{ route('visitor.show', $visitor->id) }}">
+                                                    <i class="fa fa-fw fa-eye" style="color: #E0E0E0;"></i> {{ __('Show') }}
+                                                </a>
+                                                <a class="btn btn-sm btn-success" href="{{ route('visitor.edit', $visitor->id) }}">
+                                                    <i class="fa fa-fw fa-edit" style="color: #E0E0E0;"></i> {{ __('Edit') }}
+                                                </a>
+                                                @csrf
+                                                @method('DELETE')
+                                                <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                    <i class="fa fa-fw fa-trash" style="color: #E0E0E0;"></i> {{ __('Delete') }}
+                                                </button> -->
+                                            </form>
+                                        </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

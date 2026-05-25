@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('plantel', 500)->notNullable();
-            $table->text('direccion')->nullable();  // Changed to text for longer addresses
+            $table->text('direccion')->notNullable();  // Changed to text for longer addresses
             $table->string('correo', 255)->nullable();  // Changed to string with increased length
             $table->string('telefono', 100)->nullable();
             $table->timestamps();

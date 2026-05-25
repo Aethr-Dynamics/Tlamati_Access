@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Licenciaturas
+    Ofertas académicas
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Oferta Académica</h3>
+                    <h3 class="mb-0">Lista de ofertas académicas</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                Oferta Académica
+                                {{ __('Ofertas académicas') }}
                             </span>
 
                              <div class="float-right">
@@ -64,7 +64,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-									<th >Nombre</th>
+									<th >Oferta académica</th>
 
                                         <th></th>
                                     </tr>
@@ -86,9 +86,9 @@
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                        <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                        <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
                                                             <i class="fa fa-fw fa-trash" style="color: #E0E0E0"></i> {{ __('Delete') }}
-                                                        </button>
+                                                        </button> -->
                                                 </form>
                                             </td>
                                         </tr>

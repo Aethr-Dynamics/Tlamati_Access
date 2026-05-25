@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    {{ __('Create') }} Codeqr
+    {{ __('Create') }} Attendance Log
 @endsection
 
 @section('content')
@@ -11,13 +11,13 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Create') }} Codeqr</span>
+                        <span class="card-title">{{ __('Create') }} Attendance Log</span>
                     </div>
                     <div class="card-body bg-white">
-                        <form method="POST" action="{{ route('codeqr.store') }}"  role="form" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('attendance-log.store') }}"  role="form" enctype="multipart/form-data">
                             @csrf
 
-                            @include('codeqr.form')
+                            @include('attendance-log.form')
 
                         </form>
                     </div>

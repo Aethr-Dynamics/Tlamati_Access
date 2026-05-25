@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('template_title')
-    Editar rol
+    Editar puesto
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Rol: {{ $rol->rol }}</h3>
+                    <h3 class="mb-0">Puesto: {{ $rol->rol }}</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -21,7 +21,7 @@
 
                 <div class="card card-default card-outline card-success">
                     <div class="card-header">
-                        <span class="card-title">{{ __('Update') }} Rol</span>
+                        <span class="card-title">{{ __('Editar puesto') }}</span>
                     </div>
                     <div class="card-body bg-white">
                         <form method="POST" action="{{ route('rol.update', $rol->id) }}"  role="form" enctype="multipart/form-data">

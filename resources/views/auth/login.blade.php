@@ -5,7 +5,7 @@
 @section('content')
 <div class="auth-card">
     <div class="auth-header">
-        <h2>Bienvenido</h2>
+        <h2 style="color: #0A3A56;">Bienvenido</h2>
     </div>
 
     <form method="POST" action="{{ route('login') }}">
@@ -14,7 +14,7 @@
         <!-- Email Input -->
         <div class="form-group">
             <label for="email" class="form-label text-secondary">
-                <i class="fas fa-envelope me-1"></i>{{ __('Correo Electrónico') }}
+                <i class="fas fa-envelope me-1" style="color: rgb(38, 166, 154);"></i>{{ __('Correo Electrónico') }}
             </label>
             
             <input id="email" type="email" 
@@ -31,7 +31,7 @@
         <!-- Password Input -->
         <div class="form-group">
             <label for="password" class="form-label text-secondary">
-                <i class="fas fa-lock me-1"></i>
+                <i class="fas fa-lock me-1" style="color: rgb(38, 166, 154);"></i>
                 {{ __('Contraseña') }}
             </label>
             <input id="password" type="password" 
@@ -40,7 +40,7 @@
             >
             @error('password')
                 <span class="invalid-feedback" role="alert">
-                    <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+                    <i class="fa-solid fa-circle-exclamation" style="color: rgb(38, 166, 154);"></i> {{ $message }}
                 </span>
             @enderror
         </div>
@@ -57,7 +57,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary mt-4">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i> {{ __('Login') }}
+            <i class="fa-solid fa-arrow-right-to-bracket" style="color: #E0E0E0;"></i> {{ __('Login') }}
         </button>
     </form>
 
@@ -65,14 +65,14 @@
     <div class="auth-links fade-in-link">
         @if (Route::has('password.request'))
             <a class="btn btn-link" href="{{ route('password.request') }}">
-                <i class="fa-solid fa-key"></i> Recuperar cuenta
+                <i class="fa-solid fa-key" style="color: rgb(38, 166, 154);"></i> Recuperar cuenta
             </a>
         @endif
         
         <span class="text-muted mx-2">|</span>
 
         <a href="{{ route('register') }}" style="color: var(--primary-color); text-decoration: none;">
-            <i class="fa-solid fa-user-plus"></i> Crear cuenta
+            <i class="fa-solid fa-user-plus" style="color: rgb(38, 166, 154);"></i> Crear cuenta
         </a>
     </div>
 </div>

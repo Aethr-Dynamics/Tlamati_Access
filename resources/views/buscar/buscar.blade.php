@@ -112,10 +112,10 @@ $(document).ready(function () {
                                     <div class="col-md-3"><strong>Rol:</strong></div>
                                     <div class="col-md-9">${escapeHtml(data.rol || 'Sin rol')}</div>
                                 </div>
-                                ${data.fotografia ? `
+                                ${data.fotografia_path ? `
                                 <div class="row mb-2">
                                     <div class="col-md-3"><strong>Foto:</strong></div>
-                                    <div class="col-md-9"><img src="/storage/${escapeHtml(data.fotografia)}" width="150" class="img-thumbnail" alt="Foto del estudiante"></div>
+                                    <div class="col-md-9"><img src="/storage/${escapeHtml(data.fotografia_path)}" width="150" class="img-thumbnail" alt="Foto del estudiante"></div>
                                 </div>` : ''}
                             </div>
                         </div>
@@ -143,10 +143,10 @@ $(document).ready(function () {
                                     <div class="col-md-3"><strong>Rol:</strong></div>
                                     <div class="col-md-9">${escapeHtml(data.rol || 'Sin rol')}</div>
                                 </div>
-                                ${data.fotografia ? `
+                                ${data.fotografia_path ? `
                                 <div class="row mb-2">
                                     <div class="col-md-3"><strong>Foto:</strong></div>
-                                    <div class="col-md-9"><img src="/storage/${escapeHtml(data.fotografia)}" width="150" class="img-thumbnail" alt="Foto del trabajador"></div>
+                                    <div class="col-md-9"><img src="/storage/${escapeHtml(data.fotografia_path)}" width="150" class="img-thumbnail" alt="Foto del trabajador"></div>
                                 </div>` : ''}
                             </div>
                         </div>

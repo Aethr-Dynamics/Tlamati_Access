@@ -9,7 +9,7 @@
         <div class="container-fluid"><!--begin::Container-->
             <div class="row"><!--begin::Row-->
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Estudiantes</h3>
+                    <h3 class="mb-0">Lista de estudiantes</h3>
                 </div>
             </div><!--end::Row-->
         </div><!--end::Container-->
@@ -23,7 +23,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                Estudiantes
+                                {{ __('Estudiantes') }}
                             </span>
 
                              <div class="float-right">
@@ -64,10 +64,10 @@
                                     <tr>
                                         <th>No.</th>
                                         
-                                    <th >Fotografia</th>
+                                    <th > </th>
 									<th >Nombre</th>
 									<th >Palntel</th>
-									<th >Rol</th>
+									<th >Estado</th>
 									<th >Licenciatura</th>
 
                                         <th></th>
@@ -78,10 +78,10 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-                                        <td style="text-align: center; align-items: center;"> <img src="{{ asset('storage/' . $student->fotografia) }}" style=" height: 70px;"> </td>
+                                        <td style="text-align: center; align-items: center;"> <img src="{{ asset('storage/' . $student->fotografia_path) }}" style=" height: 70px;"> </td>
 										<td >{{ $student->nombre }} {{ $student->apellido_materno }} {{ $student->apellido_paterno }}</td>
 										<td >{{ $student->school->plantel ?? 'Sin sede' }}</td>
-										<td >{{ $student->rol->rol ?? 'Sin rol' }}</td>
+										<td style="text-transform: capitalize;">{{ $student->estado }}</td>
 										<td >{{ $student->offer->nombre ?? 'Sin licenciatura' }}</td>
 
                                             <td>
@@ -94,9 +94,9 @@
                                                     </a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                                    <!-- <button type="button" class="btn btn-danger btn-sm btn-delete">
                                                         <i class="fa fa-fw fa-trash" style="color: #E0E0E0;"></i> {{ __('Delete') }}
-                                                    </button>
+                                                    </button> -->
                                                 </form>
                                             </td>
                                         </tr>

@@ -7,14 +7,20 @@ use App\Models\Student;
 use App\Models\Worker;
 use App\Models\Visitor;
 use App\Models\Income;
+use App\Models\AttendanceLog; // Importa el nuevo modelo
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Controlador encargado de manejar las operaciones de búsqueda de usuarios.
+ */
 class BusquedaController extends Controller
 {
     /**
-     * Muestra la vista del buscador
+     * Muestra la vista del buscador.
+     *
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -22,7 +28,10 @@ class BusquedaController extends Controller
     }
 
     /**
-     * Busca información del usuario por token QR o ID manual
+     * Busca información del usuario por token QR o ID manual.
+     *
+     * @param \Illuminate\Http\Request $request Petición HTTP con el identificador a buscar.
+     * @return \Illuminate\Http\JsonResponse
      */
     public function buscar(Request $request)
     {
@@ -67,12 +76,18 @@ class BusquedaController extends Controller
         // Registrar el ingreso (operación rápida)
         $this->registrarIngreso($tipo, $userId);
 
+        // Registrar la acción (Entrada o Salida) según estado actual
+        $this->registrarAcceso($tipo, $userId);
+
         // Retornar los datos del usuario
         return response()->json($userData);
     }
 
     /**
-     * Verifica si el identificador es un token QR válido
+     * Verifica si el identificador es un token QR válido.
+     *
+     * @param string $identificador Identificador a verificar.
+     * @return bool
      */
     private function esTokenQR($identificador)
     {
@@ -93,7 +108,10 @@ class BusquedaController extends Controller
     }
 
     /**
-     * Busca usuario por token QR
+     * Busca usuario por token QR.
+     *
+     * @param string $identificador Token QR a buscar.
+     * @return array|null
      */
     private function buscarPorToken($identificador)
     {
@@ -114,75 +132,96 @@ class BusquedaController extends Controller
         }
 
         // Determinar qué tipo de usuario es
+        // if ($codeqr->id_student) {
+        //     $student = Student::with(['school', 'rol', 'offer'])
+        //                       ->find($codeqr->id_student);
+            
+        //     if ($student) {
+        //         return [
+        //             'tipo' => 'student',
+        //             'user_id' => $student->id,
+        //             'data' => [
+        //                 'tipo' => 'student',
+        //                 'nombre' => $student->nombre,
+        //                 'apellido_paterno' => $student->apellido_paterno,
+        //                 'apellido_materno' => $student->apellido_materno,
+        //                 'id_offer' => $student->offer->nombre ?? 'No asignada',
+        //                 'school' => $student->school->plantel ?? 'No asignado',
+        //                 'rol' => $student->rol->rol ?? 'Sin rol',
+        //                 'fotografia_path' => $student->fotografia_path,
+        //             ]
+        //         ];
+        //     }
+        // }
+
+        // if ($codeqr->id_worker) {
+        //     $worker = Worker::with(['school', 'rol', 'offer'])
+        //                     ->find($codeqr->id_worker);
+            
+        //     if ($worker) {
+        //         return [
+        //             'tipo' => 'worker',
+        //             'user_id' => $worker->id,
+        //             'data' => [
+        //                 'tipo' => 'worker',
+        //                 'nombre' => $worker->nombre,
+        //                 'apellido_paterno' => $worker->apellido_paterno,
+        //                 'apellido_materno' => $worker->apellido_materno,
+        //                 'id_offer' => $worker->offer->nombre ?? 'No asignada',
+        //                 'school' => $worker->school->plantel ?? 'No asignado',
+        //                 'rol' => $worker->rol->rol ?? 'Sin rol',
+        //                 'fotografia_path' => $worker->fotografia_path,
+        //             ]
+        //         ];
+        //     }
+        // }
+
+        // if ($codeqr->id_visitor) {
+        //     $visitor = Visitor::find($codeqr->id_visitor);
+            
+        //     if ($visitor) {
+        //         return [
+        //             'tipo' => 'visitor',
+        //             'user_id' => $visitor->id,
+        //             'data' => [
+        //                 'tipo' => 'visitor',
+        //                 'nombre' => $visitor->nombre,
+        //                 'apellido_paterno' => $visitor->apellido_paterno,
+        //                 'apellido_materno' => $visitor->apellido_materno ?? '',
+        //                 'motivo' => $visitor->motivo,
+        //                 'es_menor' => $visitor->es_menor,
+        //             ]
+        //         ];
+        //     }
+        // }
+
+        // Buscar estudiante
         if ($codeqr->id_student) {
-            $student = Student::with(['school', 'rol', 'offer'])
-                              ->find($codeqr->id_student);
-            
-            if ($student) {
-                return [
-                    'tipo' => 'student',
-                    'user_id' => $student->id,
-                    'data' => [
-                        'tipo' => 'student',
-                        'nombre' => $student->nombre,
-                        'apellido_paterno' => $student->apellido_paterno,
-                        'apellido_materno' => $student->apellido_materno,
-                        'id_offer' => $student->offer->nombre ?? 'No asignada',
-                        'school' => $student->school->plantel ?? 'No asignado',
-                        'rol' => $student->rol->rol ?? 'Sin rol',
-                        'fotografia' => $student->fotografia,
-                    ]
-                ];
-            }
+            $student = Student::with(['school', 'rol', 'offer'])->find($codeqr->id_student);
+            if ($student) return ['tipo' => 'student', 'user_id' => $student->id, 'data' => $this->prepareStudentData($student)];
         }
 
+        // Buscar worker
         if ($codeqr->id_worker) {
-            $worker = Worker::with(['school', 'rol', 'offer'])
-                            ->find($codeqr->id_worker);
-            
-            if ($worker) {
-                return [
-                    'tipo' => 'worker',
-                    'user_id' => $worker->id,
-                    'data' => [
-                        'tipo' => 'worker',
-                        'nombre' => $worker->nombre,
-                        'apellido_paterno' => $worker->apellido_paterno,
-                        'apellido_materno' => $worker->apellido_materno,
-                        'id_offer' => $worker->offer->nombre ?? 'No asignada',
-                        'school' => $worker->school->plantel ?? 'No asignado',
-                        'rol' => $worker->rol->rol ?? 'Sin rol',
-                        'fotografia' => $worker->fotografia,
-                    ]
-                ];
-            }
+            $worker = Worker::with(['school', 'rol', 'offer'])->find($codeqr->id_worker);
+            if ($worker) return ['tipo' => 'worker', 'user_id' => $worker->id, 'data' => $this->prepareWorkerData($worker)];
         }
 
+        // Buscar visitor
         if ($codeqr->id_visitor) {
             $visitor = Visitor::find($codeqr->id_visitor);
-            
-            if ($visitor) {
-                return [
-                    'tipo' => 'visitor',
-                    'user_id' => $visitor->id,
-                    'data' => [
-                        'tipo' => 'visitor',
-                        'nombre' => $visitor->nombre,
-                        'apellido_paterno' => $visitor->apellido_paterno,
-                        'apellido_materno' => $visitor->apellido_materno ?? '',
-                        'motivo' => $visitor->motivo,
-                        'es_menor' => $visitor->es_menor,
-                    ]
-                ];
-            }
+            if ($visitor) return ['tipo' => 'visitor', 'user_id' => $visitor->id, 'data' => $this->prepareVisitorData($visitor)];
         }
 
         return null;
     }
 
     /**
-     * Busca usuario por ID manual (matrícula)
+     * Busca usuario por ID manual (matrícula).
      * Soporta formatos: 220111279, 286554001, V20240001
+     *
+     * @param string $identificador Identificador a buscar.
+     * @return array|null
      */
     private function buscarPorIdManual($identificador)
     {
@@ -199,72 +238,87 @@ class BusquedaController extends Controller
         }
 
         // Buscar en students (id_institucional)
-        $student = Student::with(['school', 'rol', 'offer'])
-                          ->where('id_institucional', $id)
-                          ->first();
+        // $student = Student::with(['school', 'rol', 'offer'])
+        //                   ->where('id_institucional', $id)
+        //                   ->first();
         
-        if ($student) {
-            return [
-                'tipo' => 'student',
-                'user_id' => $student->id,
-                'data' => [
-                    'tipo' => 'student',
-                    'nombre' => $student->nombre,
-                    'apellido_paterno' => $student->apellido_paterno,
-                    'apellido_materno' => $student->apellido_materno,
-                    'id_offer' => $student->offer->nombre ?? 'No asignada',
-                    'school' => $student->school->plantel ?? 'No asignado',
-                    'rol' => $student->rol->rol ?? 'Sin rol',
-                    'fotografia' => $student->fotografia,
-                ]
-            ];
-        }
+        // if ($student) {
+        //     return [
+        //         'tipo' => 'student',
+        //         'user_id' => $student->id,
+        //         'data' => [
+        //             'tipo' => 'student',
+        //             'nombre' => $student->nombre,
+        //             'apellido_paterno' => $student->apellido_paterno,
+        //             'apellido_materno' => $student->apellido_materno,
+        //             'id_offer' => $student->offer->nombre ?? 'No asignada',
+        //             'school' => $student->school->plantel ?? 'No asignado',
+        //             'rol' => $student->rol->rol ?? 'Sin rol',
+        //             'fotografia_path' => $student->fotografia_path,
+        //         ]
+        //     ];
+        // }
 
         // Buscar en workers (id_institucional)
-        $worker = Worker::with(['school', 'rol', 'offer'])
-                        ->where('id_institucional', $id)
-                        ->first();
+        // $worker = Worker::with(['school', 'rol', 'offer'])
+        //                 ->where('id_institucional', $id)
+        //                 ->first();
         
-        if ($worker) {
-            return [
-                'tipo' => 'worker',
-                'user_id' => $worker->id,
-                'data' => [
-                    'tipo' => 'worker',
-                    'nombre' => $worker->nombre,
-                    'apellido_paterno' => $worker->apellido_paterno,
-                    'apellido_materno' => $worker->apellido_materno,
-                    'id_offer' => $worker->offer->nombre ?? 'No asignada',
-                    'school' => $worker->school->plantel ?? 'No asignado',
-                    'rol' => $worker->rol->rol ?? 'Sin rol',
-                    'fotografia' => $worker->fotografia,
-                ]
-            ];
-        }
+        // if ($worker) {
+        //     return [
+        //         'tipo' => 'worker',
+        //         'user_id' => $worker->id,
+        //         'data' => [
+        //             'tipo' => 'worker',
+        //             'nombre' => $worker->nombre,
+        //             'apellido_paterno' => $worker->apellido_paterno,
+        //             'apellido_materno' => $worker->apellido_materno,
+        //             'id_offer' => $worker->offer->nombre ?? 'No asignada',
+        //             'school' => $worker->school->plantel ?? 'No asignado',
+        //             'rol' => $worker->rol->rol ?? 'Sin rol',
+        //             'fotografia_path' => $worker->fotografia_path,
+        //         ]
+        //     ];
+        // }
 
         // Buscar en visitors (id_visitante)
-        $visitor = Visitor::where('id_visitante', $id)->first();
+        // $visitor = Visitor::where('id_visitante', $id)->first();
         
-        if ($visitor) {
-            return [
-                'tipo' => 'visitor',
-                'user_id' => $visitor->id,
-                'data' => [
-                    'tipo' => 'visitor',
-                    'nombre' => $visitor->nombre,
-                    'apellido_paterno' => $visitor->apellido_paterno,
-                    'apellido_materno' => $visitor->apellido_materno ?? '',
-                    'motivo' => $visitor->motivo,
-                    'es_menor' => $visitor->es_menor,
-                ]
-            ];
-        }
+        // if ($visitor) {
+        //     return [
+        //         'tipo' => 'visitor',
+        //         'user_id' => $visitor->id,
+        //         'data' => [
+        //             'tipo' => 'visitor',
+        //             'nombre' => $visitor->nombre,
+        //             'apellido_paterno' => $visitor->apellido_paterno,
+        //             'apellido_materno' => $visitor->apellido_materno ?? '',
+        //             'motivo' => $visitor->motivo,
+        //             'es_menor' => $visitor->es_menor,
+        //         ]
+        //     ];
+        // }
+
+        // Buscar estudiante
+        $student = Student::with(['school', 'rol', 'offer'])->where('id_institucional', $id)->first();
+        if ($student) return ['tipo' => 'student', 'user_id' => $student->id, 'data' => $this->prepareStudentData($student)];
+
+        // Buscar worker
+        $worker = Worker::with(['school', 'rol', 'offer'])->where('id_institucional', $id)->first();
+        if ($worker) return ['tipo' => 'worker', 'user_id' => $worker->id, 'data' => $this->prepareWorkerData($worker)];
+
+        // Buscar visitor
+        $visitor = Visitor::where('id_visitante', $id)->first();
+        if ($visitor) return ['tipo' => 'visitor', 'user_id' => $visitor->id, 'data' => $this->prepareVisitorData($visitor)];
 
         return null;
     }
 
     /**
-     * Extrae el token de una URL o devuelve el token directamente
+     * Extrae el token de una URL o devuelve el token directamente.
+     *
+     * @param string $identificador Identificador a procesar.
+     * @return string|null
      */
     private function extraerToken($identificador)
     {
@@ -283,7 +337,47 @@ class BusquedaController extends Controller
     }
 
     /**
-     * Registra el ingreso del usuario en la tabla incomes
+     * Prepara los datos para la respuesta JSON.
+     */
+    private function prepareStudentData($student) {
+        return [
+            'tipo' => 'student', 'nombre' => $student->nombre, 
+            'apellido_paterno' => $student->apellido_paterno, 
+            'apellido_materno' => $student->apellido_materno, 
+            'id_offer' => $student->offer->nombre ?? 'No asignada',
+            'school' => $student->school->plantel ?? 'No asignado',
+            'rol' => $student->rol->rol ?? 'Sin rol',
+            'fotografia_path' => $student->fotografia_path,
+        ];
+    }
+
+    private function prepareWorkerData($worker) {
+        return [
+            'tipo' => 'worker', 'nombre' => $worker->nombre, 
+            'apellido_paterno' => $worker->apellido_paterno, 
+            'apellido_materno' => $worker->apellido_materno, 
+            'id_offer' => $worker->offer->nombre ?? 'No asignada',
+            'school' => $worker->school->plantel ?? 'No asignado',
+            'rol' => $worker->rol->rol ?? 'Sin rol',
+            'fotografia_path' => $worker->fotografia_path,
+        ];
+    }
+
+    private function prepareVisitorData($visitor) {
+        return [
+            'tipo' => 'visitor', 'nombre' => $visitor->nombre, 
+            'apellido_paterno' => $visitor->apellido_paterno, 
+            'apellido_materno' => $visitor->apellido_materno ?? '',
+            'motivo' => $visitor->motivo,
+            'es_menor' => $visitor->es_menor,
+        ];
+    }
+
+    /**
+     * Registra el ingreso del usuario en la tabla incomes.
+     *
+     * @param string $tipo Tipo de usuario ('student', 'worker', 'visitor').
+     * @param int $userId ID del usuario registrado.
      */
     private function registrarIngreso($tipo, $userId)
     {
@@ -322,4 +416,50 @@ class BusquedaController extends Controller
             ]);
         }
     }
+
+
+    /**
+     * Lógica principal para registrar Entrada o Salida.
+     */
+    private function registrarAcceso($tipo, $userId)
+    {
+        try {
+            // Determinar la fecha actual (YYYY-MM-DD)
+            $fechaActual = now()->format('Y-m-d');
+
+            // Buscar el último registro de este usuario para hoy
+            $ultimoRegistro = AttendanceLog::where(function($query) use ($tipo, $userId) {
+                if ($tipo === 'student') $query->where('id_student', $userId);
+                elseif ($tipo === 'worker') $query->where('id_worker', $userId);
+                else $query->where('id_visitor', $userId);
+            })
+            ->orderByDesc('accessed_at')
+            ->first();
+
+            // Determinar si el usuario está actualmente dentro o fuera
+            // Si el último registro fue una entrada (entry), entonces está adentro.
+            // Si no hay registros hoy, asume que está afuera.
+            
+            $esAdentro = false;
+            if ($ultimoRegistro) {
+                $esAdentro = ($ultimoRegistro->action === 'entry');
+            }
+
+            // Registrar la acción en la nueva tabla
+            $accion = $esAdentro ? 'exit' : 'entry';
+            
+            // Crear el registro de acceso
+            AttendanceLog::create([
+                'user_type' => $tipo,
+                'id_student' => ($tipo === 'student') ? $userId : null,
+                'id_worker' => ($tipo === 'worker') ? $userId : null,
+                'id_visitor' => ($tipo === 'visitor') ? $userId : null,
+                'action' => $accion,
+                'accessed_at' => now(),
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error al registrar acceso: ' . $e->getMessage());
+        }
+    }    
 }
