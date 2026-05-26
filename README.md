@@ -38,7 +38,7 @@
 - [8. Requisitos técnicos](#8-requisitos-técnicos)
 - [9. Instalación](#9-instalación)
 - [10. Versiones lanzadas](#10-versiones-lanzadas)
-- [11. Historial de versiones](#11-historial-de-versiones)
+- [11. Proximas de versiones](#11-proximas-de-versiones)
 - [12. Capturas del sistema](#12-capturas-del-sistema)
 - [13. Licencia](#13-licencia)
 
@@ -189,7 +189,7 @@ php artisan serve
 
 ---
 
-## 11. Historial de versiones
+## 11. Proximas versiones
 | Versión   | Característica principal                  | Descripción técnica |
 | --------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
 | **3.4.1** | Notificación e identidad digital          | Sistema avanzado de notificaciones en tiempo real entre usuarios y módulo OpenCode para análisis seguro de credenciales oficiales. |
