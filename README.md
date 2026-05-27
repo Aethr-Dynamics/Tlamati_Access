@@ -21,6 +21,9 @@
   <a href="https://www.postgresql.org/">
     <img src="https://img.shields.io/badge/PostgreSQL-pgsql-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL pgsql">
   </a>
+  <a href="https://reactnative.dev/">
+    <img src="https://img.shields.io/badge/React%20Native-Expo-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React Native Expo">
+  </a>
   <img src="https://img.shields.io/badge/Estado-En%20desarrollo-blue?style=flat-square" alt="Estado">
 </p>
 
@@ -37,21 +40,21 @@
 - [7. Arquitectura y control de versiones](#7-arquitectura-y-control-de-versiones)
 - [8. Requisitos técnicos](#8-requisitos-técnicos)
 - [9. Instalación](#9-instalación)
-- [10. Aplicacion Movil de autenticacion por QR](#10-Aplicacion-Movil)
-    - [¿Qué hace la app?](#qué-hace-la-app)
-    - [Tecnologías utilizadas](#tecnologías-utilizadas)
-    - [Requisitos previos](#requisitos-previos)
-    - [Estructura del proyecto](#estructura-del-proyecto)
-    - [Configuración de Firebase](#configuración-de-firebase)
-    - [Instalación y ejecución](#instalación-y-ejecución)
-    - [Base de datos](#base-de-datos)
-    - [Flujo de la aplicación](#flujo-de-la-aplicación)
-    - [Cómo funciona el código QR](#cómo-funciona-el-código-qr)
-    - [Detección de tipo de usuario](#detección-de-tipo-de-usuario)
-    - [Colores y tema visual](#colores-y-tema-visual)
-  - [11. Versiones lanzadas](#10-versiones-lanzadas)
-- [12. Historial de versiones](#11-historial-de-versiones)
-- [13. Licencia](#12-licencia)
+- [10. Aplicación Móvil de autenticación por QR](#10-aplicación-móvil-de-autenticación-por-qr)
+  - [¿Qué hace la app?](#qué-hace-la-app)
+  - [Tecnologías utilizadas](#tecnologías-utilizadas)
+  - [Requisitos previos](#requisitos-previos)
+  - [Estructura del proyecto](#estructura-del-proyecto)
+  - [Configuración de Firebase](#configuración-de-firebase)
+  - [Instalación y ejecución](#instalación-y-ejecución)
+  - [Base de datos](#base-de-datos)
+  - [Flujo de la aplicación](#flujo-de-la-aplicación)
+  - [Cómo funciona el código QR](#cómo-funciona-el-código-qr)
+  - [Detección de tipo de usuario](#detección-de-tipo-de-usuario)
+  - [Colores y tema visual](#colores-y-tema-visual)
+- [11. Versiones lanzadas](#11-versiones-lanzadas)
+- [12. Historial de versiones](#12-historial-de-versiones)
+- [13. Licencia](#13-licencia)
 
 ---
 
@@ -86,6 +89,7 @@ Tlamati Access fue desarrollado utilizando un stack tecnológico moderno y de al
 - **Backend:** Laravel v13 (PHP Framework), para la lógica de negocio central y gestión de APIs.
 - **Base de datos:** PostgreSQL (`pgsql`), gestor robusto, confiable y preparado para grandes volúmenes de datos transaccionales.
 - **Análisis avanzado:** Python, utilizado específicamente para módulos de análisis biométrico y detección de patrones en documentación oficial con OpenCV.
+- **Aplicación móvil:** React Native con Expo, para la generación de códigos QR cifrados desde dispositivos del usuario.
 
 ---
 
@@ -103,7 +107,8 @@ Tlamati Access no fue un desarrollo único; es el resultado de una evolución pl
 
 Las mejoras introducidas en la última etapa representan el valor principal para la UACM:
 
-- **Autenticación criptográfica dinámica:** implementación de códigos QR generados al momento y con uso único, eliminando cualquier riesgo asociado a credenciales estáticas o clonables.
+- **Autenticación criptográfica dinámica:** implementación de códigos QR generados bajo demanda y con ventana de validez de 5 minutos, eliminando cualquier riesgo asociado a credenciales estáticas o clonables. El código **no se genera automáticamente**: el usuario debe solicitarlo de forma explícita cada vez que necesite acceder; una vez expirado, debe generar uno nuevo.
+- **Cifrado AES de matrícula:** el QR no expone datos en texto plano. La matrícula del usuario se cifra junto con una marca de tiempo usando AES (vía `crypto-js`), de modo que solo el sistema lector con la clave secreta puede validar la identidad.
 - **Reconocimiento facial (biometría):** módulo avanzado que actúa como una capa de doble autenticación para agilizar el ingreso sin comprometer la seguridad.
 - **Validación documental con IA:** uso de análisis avanzados para detectar inconsistencias o falsificaciones en identificaciones oficiales mediante algoritmos entrenados.
 
@@ -129,6 +134,7 @@ Cada mejora ha sido versionada meticulosamente en ramas específicas para asegur
 - **3.3.1:** sistema de notificaciones inter-usuarios y módulo avanzado (OpenCode) para análisis de credenciales oficiales.
 - **3.4.0:** implementación rigurosa de pruebas unitarias y suites completas de seguridad.
 - **3.5.0:** integración completa del motor de reconocimiento facial en la plataforma web, cerrando el ciclo de autenticación de doble factor.
+- **3.6.0:** cifrado AES del payload del QR (matrícula + timestamp), expiración configurable de 5 minutos, generación explícita por el usuario y flujo de renovación tras expiración.
 
 ---
 
@@ -139,9 +145,55 @@ Cada mejora ha sido versionada meticulosamente en ramas específicas para asegur
 - **PHP** 8.2 o superior
 - **Laravel** v13
 - **PostgreSQL** en su versión más reciente disponible para `pgsql`
-- **Node.js** y **npm**
+- **Node.js** v18 o superior y **npm** v9 o superior
 - **Python 3.x** para módulos de biometría y análisis
 - **Hardware:** terminales con lectores QR y cámaras IP de alta resolución
+
+### Dependencias adicionales — Aplicación móvil
+
+La pantalla `CodigoAccesoScreen` requiere las siguientes dependencias adicionales:
+
+```bash
+# Cifrado AES del payload del QR
+npm install crypto-js
+npm install --save-dev @types/crypto-js
+
+# Fuente segura de aleatoriedad requerida por crypto-js en React Native
+# (debe importarse ANTES que crypto-js en el archivo)
+npm install react-native-get-random-values
+
+# Renderizado del código QR
+npx expo install react-native-svg react-native-qrcode-svg
+```
+
+### Variable de entorno — móvil
+
+En el archivo `.env` de la aplicación Expo se puede definir la clave secreta de cifrado:
+
+```env
+EXPO_PUBLIC_QR_SECRET=tu_clave_secreta_aqui
+```
+
+Si la variable no está definida, el sistema utiliza un valor de respaldo por defecto. Se recomienda establecerla explícitamente en entornos de producción.
+
+### Configuración de TypeScript
+
+Para que TypeScript reconozca `process.env` en el contexto de Expo:
+
+```bash
+npm install --save-dev @types/node
+```
+
+Y en `tsconfig.json`:
+
+```jsonc
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}
+```
 
 ---
 
@@ -149,53 +201,73 @@ Cada mejora ha sido versionada meticulosamente en ramas específicas para asegur
 
 ### Clonar repositorio principal
 
+```bash
 git clone https://github.com/Aethr-Dynamics/Tlamati_Access.git tlamati-access
 cd tlamati-access
+```
 
 ### Instalar dependencias PHP y Node.js
+
+```bash
 composer install --no-dev
 npm install
+```
 
 ### Configurar entorno
+
+```bash
 cp .env.example .env
 php artisan key:generate
+```
 
-Editar el archivo .env y establecer la conexión con PostgreSQL:
+Editar el archivo `.env` y establecer la conexión con PostgreSQL:
 
-* DB_CONNECTION=pgsql
-* DB_HOST=127.0.0.1
-* DB_PORT=5432
-* DB_DATABASE=nombre_de_la_base
-* DB_USERNAME=usuario
-* DB_PASSWORD=contraseña
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=nombre_de_la_base
+DB_USERNAME=usuario
+DB_PASSWORD=contraseña
+```
 
 ### Ejecutar migraciones y seeders
+
+```bash
 php artisan migrate --seed
+```
 
 ### Compilar assets frontend
+
+```bash
 npm run build
+```
 
 ### Ejecutar el proyecto en local
+
+```bash
 php artisan serve
-
----
-## 10. Aplicacion Movil de autenticacion por QR
-
-App móvil de control de acceso institucional para estudiantes y profesores. Permite autenticarse con credenciales institucionales, consultar el perfil y generar un código QR dinámico para acceder a las instalaciones.
+```
 
 ---
 
-## ¿Qué hace la app?
+## 10. Aplicación Móvil de autenticación por QR
 
-1. El usuario ingresa su correo y contraseña institucional
-2. La app lo autentica contra Firebase Auth y consulta sus datos en Firestore
-3. Muestra su perfil completo (nombre, sede, matrícula, etc.)
-4. Detecta automáticamente si es **estudiante** o **profesor** según el formato de su matrícula
-5. Permite generar un **código QR dinámico** que cambia cada 5 minutos y está vinculado a su matrícula
+App móvil de control de acceso institucional para estudiantes y profesores. Permite autenticarse con credenciales institucionales, consultar el perfil y generar un código QR cifrado y dinámico para acceder a las instalaciones.
 
 ---
 
-## Tecnologías utilizadas
+### ¿Qué hace la app?
+
+1. El usuario ingresa su correo y contraseña institucional.
+2. La app lo autentica contra Firebase Auth y consulta sus datos en Firestore.
+3. Muestra su perfil completo (nombre, sede, matrícula, etc.).
+4. Detecta automáticamente si es **estudiante** o **profesor** según el formato de su matrícula.
+5. Permite generar un **código QR cifrado** bajo demanda: el usuario debe pulsarlo explícitamente cada vez. El código expira a los **5 minutos**; una vez expirado, el usuario debe generar uno nuevo manualmente.
+
+---
+
+### Tecnologías utilizadas
 
 | Tecnología | Versión | Uso |
 |---|---|---|
@@ -205,12 +277,14 @@ App móvil de control de acceso institucional para estudiantes y profesores. Per
 | TypeScript | ~5.3 | Tipado estático |
 | Firebase Auth | 10.x | Autenticación de usuarios |
 | Firebase Firestore | 10.x | Base de datos de perfiles |
+| crypto-js | ^4.x | Cifrado AES del payload del QR |
+| react-native-get-random-values | ^1.x | Fuente segura de aleatoriedad para crypto-js |
 | react-native-qrcode-svg | ^6.3 | Generación del código QR |
 | react-native-svg | 15.2 | Dependencia del QR |
 
 ---
 
-## Requisitos previos
+### Requisitos previos
 
 Antes de comenzar necesitas tener instalado:
 
@@ -222,7 +296,7 @@ Antes de comenzar necesitas tener instalado:
 
 ---
 
-## Estructura del proyecto
+### Estructura del proyecto
 
 ```
 tlamati-access/
@@ -232,7 +306,7 @@ tlamati-access/
 │   ├── index.tsx               # Redirige automáticamente a /login
 │   ├── login.tsx               # Pantalla de inicio de sesión
 │   ├── perfil.tsx              # Perfil del usuario autenticado
-│   └── codigoAcceso.tsx        # Generador de código QR dinámico
+│   └── codigoAcceso.tsx        # Generador de código QR cifrado y dinámico
 │
 ├── services/
 │   └── autenticar.ts           # Lógica de Firebase (Auth + Firestore)
@@ -240,6 +314,7 @@ tlamati-access/
 ├── assets/
 │   └── logo.png                # Logo de Tlamati Access (debes colocarlo tú)
 │
+├── .env                        # Variables de entorno (EXPO_PUBLIC_QR_SECRET)
 ├── app.json                    # Configuración de Expo
 ├── babel.config.js             # Configuración de Babel
 ├── package.json                # Dependencias del proyecto
@@ -249,38 +324,38 @@ tlamati-access/
 
 ---
 
-## Configuración de Firebase
+### Configuración de Firebase
 
-### Paso 1 — Crear el proyecto
+#### Paso 1 — Crear el proyecto
 
 1. Ve a [console.firebase.google.com](https://console.firebase.google.com)
 2. Click en **"Agregar proyecto"**
 3. Dale un nombre (ej. `tlamati-access`) y crea el proyecto
 
-### Paso 2 — Activar Authentication
+#### Paso 2 — Activar Authentication
 
 1. En el menú izquierdo → **Authentication** → **Comenzar**
 2. Pestaña **Sign-in method** → habilita **Correo/Contraseña** → Guardar
 
-### Paso 3 — Crear Firestore
+#### Paso 3 — Crear Firestore
 
 1. Menú izquierdo → **Firestore Database** → **Crear base de datos**
 2. Selecciona **Comenzar en modo de prueba**
 3. Elige la región `us-central1` (o la más cercana a ti)
 
-### Paso 4 — Registrar la app
+#### Paso 4 — Registrar la app
 
 1. En la página principal del proyecto → click en el ícono **</>** (Web)
 2. Dale un nombre (ej. `tlamati-app`) → **Registrar app**
 3. Copia el objeto `firebaseConfig` que aparece
 
-### Paso 5 — Pegar credenciales en el código
+#### Paso 5 — Pegar credenciales en el código
 
 Abre `services/autenticar.ts` y reemplaza los valores del objeto `firebaseConfig`:
 
 ```typescript
 const firebaseConfig = {
-  apiKey:            ' API KEY',
+  apiKey:            'API_KEY',
   authDomain:        'AUTH_DOMAIN',
   projectId:         'PROJECT_ID',
   storageBucket:     'STORAGE_BUCKET',
@@ -293,7 +368,7 @@ const firebaseConfig = {
 
 ---
 
-## Instalación y ejecución
+### Instalación y ejecución
 
 ```bash
 # 1. Clonar o descomprimir el proyecto
@@ -302,15 +377,19 @@ cd tlamati-access
 # 2. Instalar dependencias base
 npm install
 
-# 3. Instalar librerías nativas (QR)
+# 3. Instalar librerías nativas
 npx expo install @react-native-async-storage/async-storage
 npx expo install react-native-svg react-native-qrcode-svg firebase
 npm install firebase
 
-# 4. Iniciar el servidor de desarrollo
+# 4. Instalar dependencias de cifrado
+npm install crypto-js react-native-get-random-values
+npm install crypto-js
+npm install --save-dev @types/crypto-js @types/node
+
+
+# 5. Iniciar el servidor de desarrollo
 npx expo start
-
-
 ```
 
 Luego escanea el código QR que aparece en la terminal con la app **Expo Go** en tu teléfono, o presiona:
@@ -320,9 +399,9 @@ Luego escanea el código QR que aparece en la terminal con la app **Expo Go** en
 
 ---
 
-## Base de datos
+### Base de datos
 
-### Colección: `usuarios`
+#### Colección: `usuarios`
 
 Cada documento tiene como **ID el UID de Firebase Auth** del usuario.
 
@@ -339,14 +418,14 @@ Cada documento tiene como **ID el UID de Firebase Auth** del usuario.
 | `matricula` | string | Identificador único (ver formatos) |
 | `foto` | string | URL de foto de perfil (puede estar vacío) |
 
-### Cómo crear un usuario manualmente
+#### Cómo crear un usuario manualmente
 
 1. **Firebase Auth** → **Users** → **Add user** → ingresa email y contraseña → copia el **UID**
 2. **Firestore** → **usuarios** → **Add document** → pega el UID como Document ID → agrega los campos de la tabla
 
 ---
 
-## Flujo de la aplicación
+### Flujo de la aplicación
 
 ```
 ┌─────────┐     credenciales     ┌──────────────────┐
@@ -365,11 +444,12 @@ Cada documento tiene como **ID el UID de Firebase Auth** del usuario.
                                  │  (estudiante /   │
                                  │    profesor)     │
                                  └────────┬─────────┘
-                                          │ botón
+                                          │ botón "Generar código"
                                           ▼
                                  ┌──────────────────┐
                                  │   Código QR      │
-                                 │  (dinámico 5min) │
+                                 │  cifrado AES     │
+                                 │  (5 min / manual)│
                                  └──────────────────┘
 ```
 
@@ -377,46 +457,49 @@ En cada pantalla intermedia hay un botón **← Atrás** en el header para regre
 
 ---
 
-## Cómo funciona el código QR
+### Cómo funciona el código QR
 
-El QR es **dinámico** pero no requiere conexión a internet para generarse. Funciona así:
+El QR es **cifrado y dinámico**, generado bajo demanda por el usuario. No se crea automáticamente al abrir la pantalla.
 
-### Contenido del QR
+#### Contenido cifrado del QR
+
+Antes de codificarse en el QR, el payload se cifra con AES:
 
 ```json
 {
   "matricula": "21-123-4567",
-  "ventana": 347291
+  "ts": 1716745200000
 }
 ```
 
-- `matricula` — valor estático guardado en Firestore, único por usuario
-- `ventana` — número entero que se calcula como `Math.floor(Date.now() / 300000)` y cambia automáticamente cada **5 minutos**
+- `matricula` — valor estático del usuario obtenido de Firestore.
+- `ts` — timestamp en milisegundos del momento en que se generó el código.
 
-### ¿Por qué es seguro?
+El resultado es un string AES opaco: quien escanee el QR sin la clave secreta no puede leer la matrícula.
 
-El lector del QR solo necesita:
-1. Leer la matrícula del QR
-2. Calcular la ventana actual con la misma fórmula
-3. Comparar → si coincide, el código es válido
+#### ¿Por qué es seguro?
 
-Esto significa que un QR capturado en pantalla **expira en máximo 5 minutos**, sin necesidad de base de datos ni conexión en el momento de la lectura.
+El lector del QR descifra el payload con la misma clave (`EXPO_PUBLIC_QR_SECRET`) y verifica que el timestamp no tenga más de 5 minutos de antigüedad. Esto garantiza que:
 
-### Indicador visual
+- Un QR capturado en pantalla **expira en máximo 5 minutos**.
+- La matrícula **nunca viaja en texto plano** dentro del código QR.
+- El usuario debe **generar un nuevo código manualmente** cada vez que el anterior expire.
+
+#### Indicador visual
 
 El contador cambia de color según el tiempo restante:
 
 | Color | Tiempo restante |
 |---|---|
-| Verde | Más de 2 minutos |
-| Naranja | Entre 1 y 2 minutos |
-| Rojo | Menos de 1 minuto |
+| 🟢 Verde | Más de 2 minutos |
+| 🟠 Naranja | Entre 1 y 2 minutos |
+| 🔴 Rojo | Menos de 1 minuto |
 
 ---
 
-##  Detección de tipo de usuario
+### Detección de tipo de usuario
 
-El tipo se detecta automáticamente al iniciar sesión, según el **formato de la matrícula** guardada en Firestore. No hay ningún campo `tipo` en la base de datos, la app lo deduce sola:
+El tipo se detecta automáticamente al iniciar sesión, según el **formato de la matrícula** guardada en Firestore. No hay ningún campo `tipo` en la base de datos; la app lo deduce sola:
 
 | Tipo | Formato | Ejemplo | Regex |
 |---|---|---|---|
@@ -427,7 +510,7 @@ Donde `D` representa un dígito numérico. Si la matrícula no coincide con ning
 
 ---
 
-##  Colores y tema visual
+### Colores y tema visual
 
 Los colores están basados en el logo institucional de Tlamati Access:
 
@@ -444,37 +527,42 @@ Los colores están basados en el logo institucional de Tlamati Access:
 
 ---
 
-##  Notas adicionales
+### Notas adicionales
 
-- El logo debe estar en `assets/logo.png` — sin él la pantalla de login lanzará un error
-- La foto de perfil acepta cualquier URL pública; si está vacía se muestra un avatar genérico
-- En producción se recomienda configurar las **reglas de seguridad de Firestore** para que cada usuario solo pueda leer su propio documento
-- El proyecto está configurado solo para orientación **portrait** (vertical)
+- El import de `react-native-get-random-values` debe ser el **primero** en `codigoAcceso.tsx`, antes de cualquier import de `crypto-js`.
+- El logo debe estar en `assets/logo.png` — sin él la pantalla de login lanzará un error.
+- La foto de perfil acepta cualquier URL pública; si está vacía se muestra un avatar genérico.
+- En producción se recomienda configurar las **reglas de seguridad de Firestore** para que cada usuario solo pueda leer su propio documento.
+- El proyecto está configurado solo para orientación **portrait** (vertical).
 
-
-
+---
 
 ## 11. Versiones lanzadas
+
 | Versión   | Característica principal | Descripción técnica |
-| --------- | ----------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel. |   
+| --------- | ------------------------ | ------------------- |
+| **3.1.0** | Arquitectura MVC y visualización de datos | Integración de Seed, Factory y vistas analíticas con gráficas de usuarios ingresados al plantel. |
+| **3.6.0** | QR cifrado con expiración y generación manual | La matrícula se cifra con AES antes de codificarse en el QR. El código expira a los 5 minutos y el usuario debe generarlo explícitamente; no se crea de forma automática. |
 
 ---
 
 ## 12. Historial de versiones
+
 | Versión   | Característica principal                  | Descripción técnica |
-| --------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| **3.2.0** | Control de acceso basado en roles (RBAC)  | Desarrollo de CRUD dependientes del perfil de usuario e implementación de medidas contra inyección SQL/XSS.                        |
-| **3.2.1** | Experiencia de usuario                    | Módulo unificado de vistas de errores HTTP estándar, mejorando la resiliencia visible.                                             |
-| **3.3.0** | Lectura y reportes avanzados              | Implementación de lectura física de códigos QR con hardware especializado y generación masiva de reportes PDF auditables.          |
+| --------- | ----------------------------------------- | ------------------- |
+| **3.2.0** | Control de acceso basado en roles (RBAC)  | Desarrollo de CRUD dependientes del perfil de usuario e implementación de medidas contra inyección SQL/XSS. |
+| **3.2.1** | Experiencia de usuario                    | Módulo unificado de vistas de errores HTTP estándar, mejorando la resiliencia visible. |
+| **3.3.0** | Lectura y reportes avanzados              | Implementación de lectura física de códigos QR con hardware especializado y generación masiva de reportes PDF auditables. |
 | **3.3.1** | Notificación e identidad digital          | Sistema avanzado de notificaciones en tiempo real entre usuarios y módulo OpenCode para análisis seguro de credenciales oficiales. |
-| **3.4.0** | Quality Assurance (QA)                    | Desarrollo y ejecución de pruebas unitarias completas y suites de seguridad automatizadas.                                         |
-| **3.5.0** | Biometría integrada                       | Finalización e integración exitosa del motor de reconocimiento facial en el backend web.                                           |
+| **3.4.0** | Quality Assurance (QA)                    | Desarrollo y ejecución de pruebas unitarias completas y suites de seguridad automatizadas. |
+| **3.5.0** | Biometría integrada                       | Finalización e integración exitosa del motor de reconocimiento facial en el backend web. |
+| **3.6.0** | QR cifrado con expiración y generación manual | Cifrado AES del payload (matrícula + timestamp), ventana de validez de 5 minutos, generación explícita por el usuario y flujo de renovación tras expiración. |
 
 ---
 
 ## 13. Licencia
-Aviso legal de propiedad intelectual
+
+**Aviso legal de propiedad intelectual**
 
 EL CÓDIGO FUENTE, DOCUMENTACIÓN Y ARTEFACTOS CONTENIDOS EN ESTE REPOSITORIO SON MATERIAL PROTEGIDO POR DERECHO PRIVATIVO.
 
