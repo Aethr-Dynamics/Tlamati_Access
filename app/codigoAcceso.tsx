@@ -1,3 +1,7 @@
+// IMPORTANTE: este import debe ir primero, antes de crypto-js.
+// Proporciona una fuente segura de aleatoriedad para el cifrado en React Native.
+import 'react-native-get-random-values';
+
 import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
@@ -5,34 +9,32 @@ import {
   StyleSheet,
   Animated,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import QRCode from 'react-native-qrcode-svg';
+import CryptoJS from 'crypto-js';
 
 const NAVY = '#1a2f5e';
 const TEAL = '#2a9d8f';
 
-// ─── Duración de cada ventana: 5 minutos ─────────────────────────────────────
 const VENTANA_MS = 5 * 60 * 1000;
+
+const SECRET_KEY =
+  process.env.EXPO_PUBLIC_QR_SECRET ?? '787458t';
 
 interface UserData {
   email:     string;
   matricula: string;
 }
 
-// Genera el token QR: matrícula (estática) + ventana de tiempo (dinámica)
-// El lector solo necesita recalcular la ventana actual y comparar
+
 function generarToken(matricula: string): string {
-  const ventana = Math.floor(Date.now() / VENTANA_MS);
-  return JSON.stringify({ matricula, ventana });
+  const payload = JSON.stringify({ matricula, ts: Date.now() });
+  return CryptoJS.AES.encrypt(payload, SECRET_KEY).toString();
 }
 
-// Milisegundos hasta que cambia la ventana actual
-function msHastaProximaVentana(): number {
-  const ahora = Date.now();
-  const ventanaActual = Math.floor(ahora / VENTANA_MS);
-  return (ventanaActual + 1) * VENTANA_MS - ahora;
-}
+type Estado = 'inicial' | 'activo' | 'expirado';
 
 export default function CodigoAccesoScreen() {
   const router = useRouter();
@@ -47,27 +49,29 @@ export default function CodigoAccesoScreen() {
 
   const matricula = user?.matricula ?? '';
 
-  const [token, setToken]           = useState(() => generarToken(matricula));
-  const [segundosRestantes, setSeg] = useState(() =>
-    Math.ceil(msHastaProximaVentana() / 1000)
-  );
+  const [estado, setEstado]         = useState<Estado>('inicial');
+  const [token, setToken]           = useState<string | null>(null);
+  const [generadoEn, setGeneradoEn] = useState<number | null>(null);
+  const [segundosRestantes, setSeg] = useState(VENTANA_MS / 1000);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  // Tick cada segundo — actualiza countdown y rota token al expirar
   useEffect(() => {
+    if (estado !== 'activo' || generadoEn == null) return;
+
     const interval = setInterval(() => {
-      const ms   = msHastaProximaVentana();
-      const secs = Math.ceil(ms / 1000);
-      setSeg(secs);
-      if (secs <= 1) {
-        setToken(generarToken(matricula));
+      const restante = Math.max(0, VENTANA_MS - (Date.now() - generadoEn));
+      setSeg(Math.ceil(restante / 1000));
+
+      if (restante <= 0) {
+        setEstado('expirado');
+        setToken(null);
       }
     }, 1000);
-    return () => clearInterval(interval);
-  }, [matricula]);
 
-  // Fade-in al montar
+    return () => clearInterval(interval);
+  }, [estado, generadoEn]);
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
@@ -76,7 +80,18 @@ export default function CodigoAccesoScreen() {
     }).start();
   }, []);
 
-  const minutos = Math.floor(segundosRestantes / 60);
+  const handleGenerar = () => {
+    if (!matricula) {
+      Alert.alert('Sin matrícula', 'No se encontró la matrícula del usuario.');
+      return;
+    }
+    setToken(generarToken(matricula));
+    setGeneradoEn(Date.now());
+    setSeg(VENTANA_MS / 1000);
+    setEstado('activo');
+  };
+
+  const minutos  = Math.floor(segundosRestantes / 60);
   const segundos = segundosRestantes % 60;
   const tiempoStr = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
 
@@ -92,7 +107,9 @@ export default function CodigoAccesoScreen() {
 
         <Text style={styles.title}>Código de acceso</Text>
         <Text style={styles.subtitle}>
-          Presenta este QR en el lector de acceso
+          {estado === 'activo'
+            ? 'Presenta este QR en el lector de acceso'
+            : 'Genera tu código para presentarlo en el lector'}
         </Text>
 
         {/* QR */}
@@ -101,35 +118,67 @@ export default function CodigoAccesoScreen() {
           <View style={[styles.corner, styles.cornerTR]} />
           <View style={[styles.corner, styles.cornerBL]} />
           <View style={[styles.corner, styles.cornerBR]} />
-          <View style={styles.qrInner}>
-            <QRCode
-              value={token}
-              size={220}
-              color={NAVY}
-              backgroundColor="#ffffff"
-              quietZone={12}
-            />
-          </View>
+
+          {estado === 'activo' && token ? (
+            <View style={styles.qrInner}>
+              <QRCode
+                value={token}
+                size={220}
+                color={NAVY}
+                backgroundColor="#ffffff"
+                quietZone={12}
+              />
+            </View>
+          ) : (
+            <View style={styles.qrPlaceholder}>
+              <Text style={styles.qrPlaceholderIcon}>
+                {estado === 'expirado' ? '⌛' : '🔒'}
+              </Text>
+              <Text style={styles.qrPlaceholderText}>
+                {estado === 'expirado'
+                  ? 'El código expiró'
+                  : 'Aún no has generado un código'}
+              </Text>
+            </View>
+          )}
         </View>
 
-        {/* Countdown */}
-        <View style={styles.countdownCard}>
-          <Text style={styles.countdownLabel}>Expira en</Text>
-          <Text style={[styles.countdownTime, { color: colorContador }]}>
-            {tiempoStr}
-          </Text>
-          <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${progreso * 100}%`, backgroundColor: colorContador },
-              ]}
-            />
+        {/* Countdown — solo cuando hay un código activo */}
+        {estado === 'activo' && (
+          <View style={styles.countdownCard}>
+            <Text style={styles.countdownLabel}>Expira en</Text>
+            <Text style={[styles.countdownTime, { color: colorContador }]}>
+              {tiempoStr}
+            </Text>
+            <View style={styles.progressBar}>
+              <View
+                style={[
+                  styles.progressFill,
+                  { width: `${progreso * 100}%`, backgroundColor: colorContador },
+                ]}
+              />
+            </View>
+            <Text style={styles.countdownHint}>
+              El código es válido por 5 minutos
+            </Text>
           </View>
-          <Text style={styles.countdownHint}>
-            Se genera un nuevo código automáticamente cada 5 minutos
-          </Text>
-        </View>
+        )}
+
+        {/* Botón de generación — aparece al inicio y cuando el código expira */}
+        {estado !== 'activo' && (
+          <TouchableOpacity
+            style={styles.generateButton}
+            onPress={handleGenerar}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.generateButtonIcon}>📲</Text>
+            <Text style={styles.generateButtonText}>
+              {estado === 'expirado'
+                ? 'Generar nuevo código'
+                : 'Generar código de acceso'}
+            </Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity
           style={styles.backButton}
@@ -201,6 +250,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 8,
   },
+  qrPlaceholder: {
+    width: 244,
+    height: 244,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  qrPlaceholderIcon: {
+    fontSize: 56,
+    marginBottom: 12,
+    opacity: 0.5,
+  },
+  qrPlaceholderText: {
+    fontSize: 14,
+    color: '#90a4ae',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
   countdownCard: {
     backgroundColor: '#ffffff',
     borderRadius: 20,
@@ -245,6 +311,31 @@ const styles = StyleSheet.create({
     color: '#b0bec5',
     textAlign: 'center',
     lineHeight: 17,
+  },
+  generateButton: {
+    width: '100%',
+    height: 58,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 18,
+    backgroundColor: NAVY,
+    marginBottom: 12,
+    gap: 10,
+    shadowColor: NAVY,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  generateButtonIcon: {
+    fontSize: 20,
+  },
+  generateButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   backButton: {
     width: '100%',
