@@ -21,7 +21,7 @@
   <a href="https://www.postgresql.org/">
     <img src="https://img.shields.io/badge/PostgreSQL-pgsql-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL pgsql">
   </a>
-  <img src="https://img.shields.io/badge/Estado-En%20desarrollo-blue?style=flat-square" alt="Estado">
+  <img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=flat-square" alt="Estado">
 </p>
 
 ---
