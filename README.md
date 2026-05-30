@@ -22,6 +22,7 @@
     <img src="https://img.shields.io/badge/PostgreSQL-pgsql-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL pgsql">
   </a>
   <img src="https://img.shields.io/badge/Estado-Completado-brightgreen?style=flat-square" alt="Estado">
+  <img src="https://img.shields.io/badge/Versión-3.4.0-blue?style=flat-square">
 </p>
 
 ---
